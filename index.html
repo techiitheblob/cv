@@ -3,195 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahaan Padiya | Electronics & Audio Engineering</title>
+    <title>Kahaan Padiya | Embedded Systems & DSP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-green: #00ff41; --dark-bg: #0a0a0a; }
+        :root { --neon-green: #00ff41; --dark-bg: #050505; }
         body { 
             background-color: var(--dark-bg); 
-            color: white; 
+            color: #e0e0e0; 
             font-family: 'JetBrains Mono', monospace;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 50;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 100;
         }
-        .glow-border:hover { box-shadow: 0 0 15px var(--neon-green); border-color: var(--neon-green); transition: 0.3s; }
-        canvas { display: block; width: 100%; height: 120px; }
+        .scanline {
+            width: 100%; height: 100px; z-index: 99;
+            background: linear-gradient(0deg, rgba(0, 255, 65, 0) 0%, rgba(0, 255, 65, 0.1) 50%, rgba(0, 255, 65, 0) 100%);
+            position: fixed; opacity: 0.1; pointer-events: none; animation: scan 8s linear infinite;
+        }
+        @keyframes scan { from { top: -100px; } to { top: 100vh; } }
+        .glow-hover:hover { 
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2); 
+            border-color: var(--neon-green); 
+            transform: translateY(-2px);
+        }
+        .circuit-bg {
+            background-image: radial-gradient(var(--neon-green) 0.5px, transparent 0.5px);
+            background-size: 30px 30px; opacity: 0.05; position: fixed; inset: 0; z-index: -1;
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-10">
     <div class="crt-overlay"></div>
+    <div class="scanline"></div>
+    <div class="circuit-bg"></div>
 
-    <nav class="flex justify-between items-center mb-12 border-b border-zinc-800 pb-4 relative z-10">
+    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 border-b border-zinc-800 pb-6 relative z-10 gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-[#00ff41]">KAHAAN_PADIYA.sys</h1>
-            <p class="text-xs opacity-60">Ahmedabad, India | CGPA: 8.62</p>
+            <h1 class="text-3xl font-black text-[#00ff41] tracking-tighter">KAHAAN PADIYA</h1>
+            <div class="flex flex-wrap gap-4 mt-2 text-[10px] uppercase opacity-60">
+                <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-white">Email</a>
+                <a href="tel:+918320137190" class="hover:text-white">+91 8320137190</a>
+                <a href="https://github.com/techiitheblob/" target="_blank" class="hover:text-white">Github</a>
+                <a href="https://www.linkedin.com/in/kahaan-padiya/" target="_blank" class="hover:text-white">LinkedIn</a>
+                <a href="https://kahaan.jpeg" target="_blank" class="hover:text-white text-yellow-500">Photography</a>
+            </div>
         </div>
-        <div class="space-x-6 text-sm hidden md:block">
-            <a href="#projects" class="hover:text-[#00ff41]">[PROJECTS]</a>
-            <a href="#experience" class="hover:text-[#00ff41]">[EXPERIENCE]</a>
-            <a href="#skills" class="hover:text-[#00ff41]">[SKILLS]</a>
+        <div class="space-x-4 text-xs font-bold">
+            <a href="#projects" class="border border-zinc-700 px-3 py-2 hover:bg-[#00ff41] hover:text-black transition-all">PROJECTS_LOG</a>
+            <a href="#skills" class="border border-zinc-700 px-3 py-2 hover:bg-[#00ff41] hover:text-black transition-all">SYSTEM_SPECS</a>
         </div>
     </nav>
 
-    <header class="mb-20">
-        <div class="max-w-4xl">
-            <p class="text-[#00ff41] mb-2">// B.Tech in Electronics & Communication</p>
-            <h2 class="text-4xl md:text-6xl font-bold mb-6">Developing high-fidelity audio systems and embedded solutions.</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <p class="opacity-80 leading-relaxed">
-                    Winner of the MATLAB Innovation Challenge[cite: 24, 41]. 
-                    Specializing in Virtual Analog Synthesis [cite: 18, 20] and noise-shaping for Delta-Sigma modulators. 
-                    Passionate about wildlife conservation and photography[cite: 52, 55].
-                </p>
-                <div class="bg-zinc-900 p-4 border border-zinc-700 rounded shadow-2xl">
-                    <span class="text-[10px] opacity-50 mb-2 block">LIVE_SIGNAL_ANALYSIS</span>
-                    <canvas id="visualizer"></canvas>
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-24 items-center">
+        <div class="lg:col-span-7">
+            <div class="inline-block px-2 py-1 bg-[#00ff41] text-black text-[10px] font-bold mb-4">SYSTEMS_ENGINEER_V2.0</div>
+            <h2 class="text-4xl md:text-7xl font-bold leading-tight mb-8">
+                Architecting <span class="text-[#00ff41]">Silicon</span> <br>& <span class="text-[#00ff41]">Signal</span> Solutions.
+            </h2>
+            <p class="text-zinc-400 max-w-xl leading-relaxed">
+                Electronics and Communications student specializing in **Digital Signal Processing** and **Embedded Architecture**. 
+                From polyphonic synthesis engines to solar optimization algorithms, I build systems that bridge the gap between physics and code.
+            </p>
+        </div>
+        <div class="lg:col-span-5 relative group">
+            <div class="absolute -top-4 -left-4 text-[10px] text-[#00ff41] animate-pulse">REC ● OSCILLOSCOPE_ACTIVE</div>
+            <div class="bg-zinc-900 border-2 border-zinc-800 p-2 rounded-lg relative overflow-hidden">
+                <canvas id="heroOscilloscope" class="w-full h-64 cursor-crosshair"></canvas>
+                <div class="flex justify-between mt-2 px-2 text-[8px] text-zinc-600">
+                    <span>FREQ: <span id="freqVal">440Hz</span></span>
+                    <span>AMP: <span id="ampVal">1.0V</span></span>
+                    <span>TYPE: SINE_WAVE</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="projects" class="mb-20">
-        <h3 class="text-xl font-bold mb-8 flex items-center">
-            <span class="bg-[#00ff41] text-black px-2 py-1 mr-3">PROJ</span> ACTIVE_FILES
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="p-6 border border-zinc-800 rounded glow-border bg-[#111]">
-                <div class="flex justify-between items-start mb-4">
-                    <h4 class="text-xl font-bold">Polyphonic Digital Synthesizer</h4>
-                    <span class="text-[10px] bg-red-900/30 text-red-500 px-2 border border-red-500">ONGOING</span>
-                </div>
-                <p class="text-sm opacity-70 mb-4">Developing an 8-voice virtual analog synthesis engine in C++ with emulated transistor ladder filters[cite: 18, 20].</p>
-                <div class="flex gap-2 text-[10px]">
-                    <span class="bg-zinc-800 px-2 py-1">C++</span>
-                    <span class="bg-zinc-800 px-2 py-1">DSP</span>
-                    <span class="bg-zinc-800 px-2 py-1">EMBEDDED</span>
+    <section id="projects" class="mb-24">
+        <h3 class="text-2xl font-bold mb-10 border-l-4 border-[#00ff41] pl-4 uppercase tracking-widest text-zinc-500">Current_Operations</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-zinc-900/50 border border-zinc-800 p-8 glow-hover transition-all relative group">
+                <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-100 text-xs">0x01</div>
+                <h4 class="text-xl font-bold mb-4">Minimoog Poly-Synth</h4>
+                <p class="text-zinc-500 text-sm mb-6">Implementing an 8-voice virtual analog synthesis engine in C++ with transistor ladder filter emulation.</p>
+                <div class="flex gap-2 mb-4">
+                    <span class="text-[9px] bg-zinc-800 px-2 py-1 text-white">C++</span>
+                    <span class="text-[9px] bg-zinc-800 px-2 py-1 text-white">TEENSY 4.1</span>
+                    <span class="text-[9px] bg-red-900/50 text-red-200 px-2 py-1 border border-red-500">LIVE_DEV</span>
                 </div>
             </div>
 
-            <div class="p-6 border border-zinc-800 rounded glow-border bg-[#111]">
-                <h4 class="text-xl font-bold mb-4">Delta-Sigma Modulator</h4>
-                <p class="text-sm opacity-70 mb-4">2nd-order noise-shaping model in Simulink to optimize SNR for high-fidelity audio[cite: 22, 23].</p>
-                <div class="flex gap-2 text-[10px]">
-                    <span class="bg-zinc-800 px-2 py-1">MATLAB</span>
-                    <span class="bg-zinc-800 px-2 py-1">SIMULINK</span>
-                    <span class="bg-zinc-800 px-2 py-1">LTSPICE</span>
+            <div class="bg-zinc-900/50 border border-zinc-800 p-8 glow-hover transition-all relative group">
+                <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-100 text-xs">0x02</div>
+                <h4 class="text-xl font-bold mb-4">ΔΣ Modulator Design</h4>
+                <p class="text-zinc-500 text-sm mb-6">MATLAB/Simulink modeling of 2nd-order modulators for high-fidelity audio noise-shaping.</p>
+                <div class="flex gap-2">
+                    <span class="text-[9px] bg-zinc-800 px-2 py-1 text-white">MATLAB</span>
+                    <span class="text-[9px] bg-zinc-800 px-2 py-1 text-white">SIMULINK</span>
+                    <span class="text-[9px] bg-zinc-800 px-2 py-1 text-white">DSP</span>
                 </div>
             </div>
 
-            <div class="p-6 border border-zinc-800 rounded glow-border bg-[#111]">
-                <div class="flex justify-between items-start mb-4">
-                    <h4 class="text-xl font-bold">MATLAB Innovation Challenge</h4>
-                    <span class="text-[10px] bg-green-900/30 text-green-500 px-2 border border-green-500">1st PLACE</span>
-                </div>
-                <p class="text-sm opacity-70 mb-4">Solar panel positioning algorithm utilizing multi-variable analysis of sun paths[cite: 24, 26].</p>
-                <div class="flex gap-2 text-[10px]">
-                    <span class="bg-zinc-800 px-2 py-1">OPTIMIZATION</span>
-                    <span class="bg-zinc-800 px-2 py-1">RENEWABLES</span>
-                </div>
-            </div>
-
-            <div class="p-6 border border-zinc-800 rounded glow-border bg-[#111]">
-                <h4 class="text-xl font-bold mb-4">Beam Steering Tool</h4>
-                <p class="text-sm opacity-70 mb-4">Designed simulation tools for antenna array optimization, relevant for spatial audio applications[cite: 28, 30].</p>
-                <div class="flex gap-2 text-[10px]">
-                    <span class="bg-zinc-800 px-2 py-1">MATLAB</span>
-                    <span class="bg-zinc-800 px-2 py-1">DSP</span>
+            <div class="bg-[#00ff41]/5 border border-[#00ff41]/30 p-8 glow-hover transition-all relative group">
+                <div class="absolute top-0 right-0 p-2 text-[#00ff41] text-xs">🏆 WINNER</div>
+                <h4 class="text-xl font-bold mb-4">MATLAB Challenge</h4>
+                <p class="text-zinc-400 text-sm mb-6">Led team to create a multi-variable solar panel positioning algorithm. Winner of IEEE Hackathon.</p>
+                <div class="flex gap-2">
+                    <span class="text-[9px] bg-[#00ff41] text-black font-bold px-2 py-1">FIRST PLACE</span>
+                    <span class="text-[9px] bg-zinc-800 px-2 py-1 text-white">SIMULINK</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="skills" class="mb-20 grid grid-cols-1 md:grid-cols-3 gap-12">
-        <div>
-            <h3 class="font-bold mb-4 text-[#00ff41]">> TOOLCHAIN</h3>
-            <ul class="text-sm space-y-2 opacity-80">
-                <li>MATLAB & Simulink [cite: 13]</li>
-                <li>LTspice & Proteus [cite: 13]</li>
-                <li>Python (NumPy, Matplotlib) [cite: 14]</li>
-                <li>C/C++ (AVR/ATmega) [cite: 14]</li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="font-bold mb-4 text-[#00ff41]">> HARDWARE</h3>
-            <ul class="text-sm space-y-2 opacity-80">
-                <li>ATmega2560 [cite: 14]</li>
-                <li>Asus Tinker Board [cite: 14]</li>
-                <li>8086 Microprocessors [cite: 14]</li>
-                <li>Raspberry Pi [cite: 14]</li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="font-bold mb-4 text-[#00ff41]">> CONSERVATION</h3>
-            <ul class="text-sm space-y-2 opacity-80">
-                <li>QGIS Mapping [cite: 14, 33]</li>
-                <li>Adobe Lightroom [cite: 14]</li>
-                <li>Citizen Science (GBBC) [cite: 53]</li>
-                <li>Wildlife Photography [cite: 55]</li>
-            </ul>
+    <section class="mb-24 p-10 bg-zinc-900 border border-dashed border-zinc-700 rounded-xl text-center">
+        <h4 class="text-[#00ff41] font-bold mb-2 uppercase tracking-tighter">Mini-Game: Signal Stabilizer</h4>
+        <p class="text-xs text-zinc-500 mb-6">Use your mouse to match the target frequency (Yellow) with your signal (Green).</p>
+        <div id="gameContainer" class="relative bg-black h-40 w-full max-w-2xl mx-auto rounded border border-zinc-800 overflow-hidden">
+            <canvas id="gameCanvas"></canvas>
+            <div id="winMessage" class="absolute inset-0 bg-[#00ff41] text-black font-black flex items-center justify-center opacity-0 pointer-events-none transition-opacity">SIGNAL STABILIZED!</div>
         </div>
     </section>
 
-    <section id="experience" class="mb-20">
-        <h3 class="text-xl font-bold mb-8 flex items-center">
-            <span class="bg-[#00ff41] text-black px-2 py-1 mr-3">EXP</span> LOG_FILES
-        </h3>
-        <div class="border-l border-zinc-800 pl-6 space-y-12">
-            <div>
-                <span class="text-[10px] opacity-50">JUNE 2024</span>
-                <h4 class="text-lg font-bold">Summer Intern | Jivdaya Charitable Trust [cite: 45, 46, 48]</h4>
-                <p class="text-sm opacity-70 mt-2">Processed clinical data for raptor research and managed crisis logistics for wildlife rehab[cite: 49, 50].</p>
-            </div>
-            <div>
-                <span class="text-[10px] opacity-50">2023 - PRESENT</span>
-                <h4 class="text-lg font-bold">GBBC Campus Organizer [cite: 53]</h4>
-                <p class="text-sm opacity-70 mt-2">Coordinating volunteers and managing biodiversity data for the Great Backyard Bird Count[cite: 53, 54].</p>
-            </div>
+    <footer class="mt-20 border-t border-zinc-800 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="text-[10px] text-zinc-600 space-y-1">
+            <p>© 2026 KAHAAN PADIYA | BUILT FOR HIGH-FIDELITY</p>
+            <p>LOCATION: 23.2156° N, 72.6369° E (GANDHINAGAR)</p>
         </div>
-    </section>
-
-    <footer class="text-center opacity-40 text-[10px] py-10 border-t border-zinc-900">
-        END_OF_TRANSMISSION // KAHAAN PADIYA 2026 // GENERATED_VIA_GEMINI
+        <div class="flex gap-6">
+            <a href="https://github.com/techiitheblob/" class="text-zinc-400 hover:text-[#00ff41] text-xs transition-colors">[GITHUB]</a>
+            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="text-zinc-400 hover:text-[#00ff41] text-xs transition-colors">[LINKEDIN]</a>
+            <a href="mailto:Kahaanpadiya@gmail.com" class="text-zinc-400 hover:text-[#00ff41] text-xs transition-colors">[CONTACT]</a>
+        </div>
     </footer>
 
     <script>
-        // Interactive Canvas Visualizer
-        const canvas = document.getElementById('visualizer');
+        // Hero Oscilloscope Logic
+        const canvas = document.getElementById('heroOscilloscope');
         const ctx = canvas.getContext('2d');
-        let width = canvas.width = canvas.parentElement.clientWidth;
-        let height = canvas.height = 120;
+        const freqLabel = document.getElementById('freqVal');
+        const ampLabel = document.getElementById('ampVal');
 
-        function draw() {
-            ctx.fillStyle = '#111';
-            ctx.fillRect(0, 0, width, height);
+        let mouseX = 0;
+        let mouseY = 0;
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+            
+            const freq = Math.round((mouseX / canvas.width) * 1000);
+            const amp = (1 - (mouseY / canvas.height)).toFixed(2);
+            freqLabel.innerText = `${freq}Hz`;
+            ampLabel.innerText = `${amp}V`;
+        });
+
+        function animateHero() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
             ctx.strokeStyle = '#00ff41';
             ctx.lineWidth = 2;
             ctx.beginPath();
             
-            let sliceWidth = width / 100;
-            let x = 0;
+            const frequency = (mouseX / canvas.width) * 0.1;
+            const amplitude = (canvas.height / 2) - (mouseY / canvas.height * 100);
 
-            for(let i = 0; i < 100; i++) {
-                let v = Math.random() * 0.5 + 0.5;
-                let y = (v * height/2) * Math.sin(i * 0.2 + Date.now() * 0.005) + height/2;
-                if(i === 0) ctx.moveTo(x, y);
+            for (let x = 0; x < canvas.width; x++) {
+                const y = (canvas.height / 2) + Math.sin(x * frequency + Date.now() * 0.01) * amplitude;
+                if (x === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
-                x += sliceWidth;
             }
             ctx.stroke();
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animateHero);
         }
-        draw();
+        animateHero();
 
-        window.addEventListener('resize', () => {
-            width = canvas.width = canvas.parentElement.clientWidth;
+        // Mini Game Logic
+        const gCanvas = document.getElementById('gameCanvas');
+        const gCtx = gCanvas.getContext('2d');
+        const winMsg = document.getElementById('winMessage');
+        let gWidth = gCanvas.width = gCanvas.parentElement.clientWidth;
+        let gHeight = gCanvas.height = 160;
+        
+        let targetFreq = 0.05;
+        let currentFreq = 0;
+
+        gCanvas.addEventListener('mousemove', (e) => {
+            const rect = gCanvas.getBoundingClientRect();
+            currentFreq = ((e.clientX - rect.left) / gWidth) * 0.1;
+            
+            if (Math.abs(currentFreq - targetFreq) < 0.002) {
+                winMsg.style.opacity = '1';
+                setTimeout(() => { targetFreq = Math.random() * 0.08 + 0.01; winMsg.style.opacity = '0'; }, 2000);
+            }
         });
+
+        function gameLoop() {
+            gCtx.fillStyle = 'black';
+            gCtx.fillRect(0, 0, gWidth, gHeight);
+
+            // Target Wave (Yellow)
+            gCtx.strokeStyle = 'rgba(255, 255, 0, 0.3)';
+            gCtx.beginPath();
+            for(let x=0; x<gWidth; x++) {
+                gCtx.lineTo(x, gHeight/2 + Math.sin(x * targetFreq) * 30);
+            }
+            gCtx.stroke();
+
+            // Player Wave (Green)
+            gCtx.strokeStyle = '#00ff41';
+            gCtx.lineWidth = 2;
+            gCtx.beginPath();
+            for(let x=0; x<gWidth; x++) {
+                gCtx.lineTo(x, gHeight/2 + Math.sin(x * currentFreq) * 30);
+            }
+            gCtx.stroke();
+
+            requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
     </script>
 </body>
 </html>
