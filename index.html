@@ -357,8 +357,8 @@
         const body = document.getElementById('systemBody');
         const powerBtn = document.getElementById('powerBtn');
 
-        // Master Power Switch
-        powerBtn.addEventListener('click', () => {
+        // Abstracted Power Toggle Function
+        function togglePower() {
             isPowerOn = !isPowerOn;
             if(isPowerOn) {
                 body.classList.add('power-on');
@@ -368,6 +368,18 @@
                 document.getElementById('freqVal').innerText = "0";
                 document.getElementById('ampVal').innerText = "0.0";
             }
+        }
+
+        // Master Power Switch Manual Click
+        powerBtn.addEventListener('click', togglePower);
+
+        // Auto Power-On after page load (500ms delay)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (!isPowerOn) {
+                    togglePower();
+                }
+            }, 500);
         });
 
         // Initialize VU Meter LEDs
