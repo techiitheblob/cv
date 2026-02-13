@@ -399,14 +399,17 @@
         let lastMouseY = 0;
         let currentLevel = 0;
 
-        document.addEventListener('mousemove', (e) => {
+     document.addEventListener('mousemove', (e) => {
             if(!isPowerOn) return;
             const now = Date.now();
             const dt = now - lastMouseTime;
             const dx = e.clientX - lastMouseX;
             const dy = e.clientY - lastMouseY;
             const distance = Math.sqrt(dx*dx + dy*dy);
-            const speed = Math.min(distance / (dt || 1), 50); // cap speed
+            
+            // SENSITIVITY MULTIPLIER (Increase this number to make it more sensitive. 3.5 is a great sweet spot)
+            const sensitivity = 3.5; 
+            const speed = Math.min((distance * sensitivity) / (dt || 1), 50); // cap speed
             
             // smooth level up
             currentLevel = Math.max(currentLevel, speed / 50);
@@ -516,3 +519,4 @@
     </script>
 </body>
 </html>
+
