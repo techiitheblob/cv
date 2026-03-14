@@ -3,520 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahaan Padiya | Audio & Embedded Engineer</title>
+    <title>Kahaan Padiya — Silicon & Signal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --panel-bg: #e6e6e6;
-            --panel-border: #999;
-            --engraved-text: #222;
-            --screen-bg: #111;
-            --amber-glow: #ffb000;
-        }
-        body {
-            background-color: #2a2a2a;
-            color: var(--engraved-text);
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(#333 1px, transparent 0);
-            background-size: 20px 20px;
-            scroll-behavior: smooth;
-            padding: 2rem 1rem;
-        }
-        /* Hardware Textures */
-        .rack-unit {
-            background-color: var(--panel-bg);
-            background-image: linear-gradient(to bottom, #f5f5f5 0%, #e0e0e0 100%);
-            border: 1px solid var(--panel-border);
-            border-top: 2px solid #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 -2px 5px rgba(0,0,0,0.1);
-            border-radius: 4px;
-            position: relative;
-        }
-        .rack-ear {
-            background: linear-gradient(to right, #ccc 0%, #a0a0a0 100%);
-            border-right: 1px solid #888;
-            box-shadow: inset 2px 0 5px rgba(255,255,255,0.5);
-        }
-        /* Component styling */
-        .engraved {
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
-        }
-        .inset-screen {
-            background-color: var(--screen-bg);
-            border: 4px solid #333;
-            border-bottom-color: #555;
-            border-right-color: #555;
-            box-shadow: inset 0 0 15px rgba(0,0,0,1);
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--amber-glow);
-            position: relative;
-            overflow: hidden;
-        }
-        .inset-screen::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px; pointer-events: none; opacity: 0.3;
-        }
-        /* Hardware Details */
-        .screw {
-            width: 14px; height: 14px; border-radius: 50%;
-            background: linear-gradient(135deg, #ddd, #999);
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        .screw::before, .screw::after {
-            content: ''; position: absolute; background: rgba(0,0,0,0.4);
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-        }
-        .screw::before { width: 8px; height: 1.5px; }
-        .screw::after { width: 1.5px; height: 8px; }
-        .screw-tl { position: absolute; top: 15px; left: 15px; transform: rotate(15deg); }
-        .screw-tr { position: absolute; top: 15px; right: 15px; transform: rotate(-45deg); }
-        .screw-bl { position: absolute; bottom: 15px; left: 15px; transform: rotate(70deg); }
-        .screw-br { position: absolute; bottom: 15px; right: 15px; transform: rotate(-10deg); }
+        :root { --bg: #0a0a0a; --accent: #00ff41; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
-        /* Interactive Elements */
-        .toggle-switch {
-            width: 30px; height: 60px; background: #222; border-radius: 4px;
-            position: relative; cursor: pointer; box-shadow: inset 0 0 5px black, 0 1px 1px rgba(255,255,255,0.5);
-        }
-        .toggle-knob {
-            width: 26px; height: 30px; background: linear-gradient(to bottom, #eee, #aaa);
-            position: absolute; left: 2px; top: 2px; border-radius: 3px;
-            box-shadow: 0 5px 5px rgba(0,0,0,0.5), inset 0 1px 2px white;
-            transition: all 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-        .power-on .toggle-knob { top: 28px; box-shadow: 0 -5px 5px rgba(0,0,0,0.5), inset 0 1px 2px white; }
-        .led {
-            width: 12px; height: 12px; border-radius: 50%; background: #4a0000;
-            border: 2px solid #222; box-shadow: inset 0 2px 4px rgba(0,0,0,0.8); transition: 0.2s;
-        }
-        .power-on .led.pwr { background: #ff3333; box-shadow: 0 0 10px #ff3333, inset 0 2px 4px rgba(255,255,255,0.4); }
-        .vu-led { width: 8px; height: 16px; background: #2a3b2c; margin: 0 1px; border-radius: 1px; }
-        .vu-led.active-green { background: #00ff00; box-shadow: 0 0 5px #00ff00; }
-        .vu-led.active-yellow { background: #ffff00; box-shadow: 0 0 5px #ffff00; }
-        .vu-led.active-red { background: #ff0000; box-shadow: 0 0 5px #ff0000; }
+        /* Smooth Entrance Animations */
+        .reveal { opacity: 0; filter: blur(20px); transform: translateY(30px); transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.active { opacity: 1; filter: blur(0px); transform: translateY(0px); }
+
+        /* Project Expansion Logic */
+        .project-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; height: 180px; overflow: hidden; border-bottom: 1px solid #333; }
+        .project-card.expanded { height: 450px; background: #111; border-color: var(--accent); padding-bottom: 2rem; }
         
-        /* System State */
-        .screen-content { opacity: 0; transition: opacity 0.5s; }
-        .power-on .screen-content { opacity: 1; }
-        .data-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #666; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;}
+        /* Icon Flip Animation */
+        .icon-box { transition: transform 0.6s; transform-style: preserve-3d; }
+        .reveal.active .icon-box { transform: rotateY(360deg); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        
+        .huge-text { font-size: clamp(3rem, 15vw, 12rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.05em; }
     </style>
 </head>
-<body class="flex justify-center items-start min-h-screen" id="systemBody">
+<body class="selection:bg-green-500 selection:text-black">
 
-    <main class="w-full max-w-6xl flex shadow-2xl">
-        <div class="w-12 rack-ear rounded-l-lg flex flex-col justify-between items-center py-10 relative hidden md:flex">
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
+    <nav class="fixed top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
+        <span class="font-bold tracking-tighter text-xl">KP / 27</span>
+        <div class="space-x-8 text-xs uppercase tracking-widest font-medium opacity-60">
+            <a href="#work" class="hover:opacity-100 transition">Work</a>
+            <a href="#about" class="hover:opacity-100 transition">About</a>
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:opacity-100 transition">Contact</a>
         </div>
+    </nav>
 
-        <div class="flex-1 rack-unit p-6 md:p-12 overflow-hidden">
-            <div class="screw screw-tl"></div>
-            <div class="screw screw-tr"></div>
-            <div class="screw screw-bl"></div>
-            <div class="screw screw-br"></div>
+    <section class="min-h-screen flex flex-col justify-center px-8 pt-20">
+        <h1 class="huge-text reveal">MODULATING<br><span class="text-zinc-800">IDEAS.</span></h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 mt-12 gap-12">
+            <div class="reveal" style="transition-delay: 0.2s;">
+                <p class="text-2xl font-light leading-relaxed text-zinc-400">
+                    B.Tech in Electronics at PDEU. Winner of the MATLAB Innovation Challenge. Building high-fidelity DSP engines and embedded systems.
+                </p>
+                <div class="mt-8 flex gap-6 items-center">
+                    <div class="w-12 h-12 rounded-full border border-zinc-700 flex items-center justify-center icon-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <span class="text-xs uppercase tracking-widest opacity-40">Scroll to Explore</span>
+                </div>
+            </div>
+            <div class="flex flex-col justify-end items-start md:items-end space-y-2 text-sm font-mono opacity-40 reveal" style="transition-delay: 0.4s;">
+                <p>LAT: 23.2156° N</p>
+                <p>LONG: 72.6369° E</p>
+                <p>Ahmedabad, IN</p>
+            </div>
+        </div>
+    </section>
 
-            <nav class="flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-[#ccc] pb-6 mb-12 gap-6 relative">
+    <section id="work" class="px-8 py-32 border-t border-zinc-900">
+        <h2 class="text-xs uppercase tracking-[0.3em] text-zinc-600 mb-20 reveal">Selected Engineering Work (Click to Expand)</h2>
+        
+        <div class="space-y-0">
+            <div class="project-card reveal p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-20">
+                    <span class="text-zinc-600 font-mono">01</span>
+                    <h3 class="text-3xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform">Minimoog Poly-Synth</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform">↗</span>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity">
+                    <p class="text-zinc-400 text-lg leading-relaxed">
+                        Developing an 8-voice virtual analog synthesis engine in C++[cite: 18]. Implementing non-linear transistor ladder filters for real-time embedded performance on high-performance microcontrollers[cite: 20].
+                    </p>
+                    <div class="space-y-4">
+                        <div class="text-xs uppercase text-zinc-500 font-bold tracking-widest">Stack</div>
+                        <p class="font-mono text-accent">C++ / DSP / Embedded Systems / VA Synthesis</p>
+                        <a href="https://github.com/techiitheblob/" class="inline-block mt-4 border border-zinc-700 px-6 py-2 hover:bg-white hover:text-black transition">View Source</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-20">
+                    <span class="text-zinc-600 font-mono">02</span>
+                    <h3 class="text-3xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform">ΔΣ Modulator</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform">↗</span>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity">
+                    <p class="text-zinc-400 text-lg leading-relaxed">
+                        Modeled a 2nd-order Delta-Sigma modulator in Simulink to analyze noise-shaping for high-fidelity audio[cite: 22]. Focused on the critical trade-off between Over-Sampling Ratio (OSR) and Signal-to-Noise Ratio (SNR)[cite: 23].
+                    </p>
+                    <div class="space-y-4">
+                        <div class="text-xs uppercase text-zinc-500 font-bold tracking-widest">Tools</div>
+                        <p class="font-mono">MATLAB / Simulink / Mixed-Signal VLSI</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-20">
+                    <span class="text-zinc-600 font-mono">03</span>
+                    <h3 class="text-3xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform">Solar Precision Algorithm</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform">↗</span>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity">
+                    <p class="text-zinc-400 text-lg leading-relaxed">
+                        First Place Winner of the MATLAB Innovation Challenge[cite: 24, 41]. Led a team to develop an algorithm that determines precise solar panel positioning based on annual sun path and atmospheric conditions[cite: 26, 27].
+                    </p>
+                    <div class="space-y-4">
+                        <div class="text-xs uppercase text-zinc-500 font-bold tracking-widest">Award</div>
+                        <p class="font-mono text-green-400">IEEE Hackathon: Code the Future (Winner)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="px-8 py-32 bg-zinc-950">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-20">
+            <div class="reveal">
+                <h4 class="text-5xl font-bold mb-8">Specs.</h4>
+                <p class="text-zinc-500 leading-relaxed font-light">
+                    My work sits at the intersection of analog warmth and digital precision[cite: 10, 15]. I focus on how signals move through silicon to create authentic experiences[cite: 10, 11].
+                </p>
+            </div>
+            <div class="space-y-12 reveal" style="transition-delay: 0.2s;">
                 <div>
-                    <h1 class="text-4xl md:text-5xl font-black tracking-tighter engraved mb-2 text-zinc-800">KAHAAN PADIYA</h1>
-                    <div class="data-label mb-2">MODELS: DSP / EMBEDDED / SYNTHESIS</div>
-                    <div class="flex flex-wrap gap-4 text-xs font-bold text-zinc-600">
-                        <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-black hover:underline">EMAIL</a>
-                        <a href="tel:+918320137190" class="hover:text-black hover:underline">+91 8320137190</a>
-                        <a href="https://github.com/techiitheblob/" target="_blank" class="hover:text-black hover:underline">GITHUB</a>
-                        <a href="https://www.linkedin.com/in/kahaan-padiya/" target="_blank" class="hover:text-black hover:underline">LINKEDIN</a>
-                        <a href="https://kahaanjpeg.mypixieset.com/" target="_blank" class="hover:text-black hover:underline">KAHAAN.JPEG</a>
+                    <span class="data-label text-zinc-600 block mb-4 uppercase text-[10px] tracking-widest">Programming</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 border border-zinc-800 text-sm">C/C++ (AVR)</span>
+                        <span class="px-3 py-1 border border-zinc-800 text-sm">Python (NumPy)</span>
+                        <span class="px-3 py-1 border border-zinc-800 text-sm">Assembly (8086)</span>
                     </div>
                 </div>
-
-                <div class="flex items-end gap-6 bg-zinc-300/50 p-4 border border-zinc-400 rounded">
-                    <div class="flex flex-col items-center">
-                        <span class="data-label text-[10px] mb-2">INPUT LEVEL</span>
-                        <div class="inset-screen p-2 flex" id="vuMeter">
-                            </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="led pwr mb-3" id="pwrLed"></div>
-                        <div class="toggle-switch" id="powerBtn">
-                            <div class="toggle-knob"></div>
-                        </div>
-                        <span class="data-label text-[10px] mt-2">PWR</span>
+                <div>
+                    <span class="data-label text-zinc-600 block mb-4 uppercase text-[10px] tracking-widest">Simulation</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 border border-zinc-800 text-sm">MATLAB</span>
+                        <span class="px-3 py-1 border border-zinc-800 text-sm">LTspice</span>
+                        <span class="px-3 py-1 border border-zinc-800 text-sm">Simulink</span>
                     </div>
                 </div>
-            </nav>
-
-            <header class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-center bg-zinc-200/50 p-6 border border-zinc-300 rounded relative">
-                <div class="absolute top-2 left-4 data-label">CH 1: SIGNAL MODULATION</div>
-                
-                <div class="lg:col-span-6 mt-6 lg:mt-0">
-                    <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-4 engraved text-zinc-800">
-                        Modulating Ideas <br> Into Reality.
-                    </h2>
-                    <p class="text-zinc-600 max-w-lg font-medium">
-                        Electronics & Communication Engineer specializing in High-Fidelity DSP, Embedded Architecture, and Virtual Analog Synthesis.
+            </div>
+            <div class="space-y-12 reveal" style="transition-delay: 0.4s;">
+                <div class="border-l border-zinc-800 pl-8">
+                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4">Summer Intern '24</h5>
+                    <p class="text-zinc-500 text-sm leading-relaxed">
+                        Jivdaya Charitable Trust: Wildlife rehabilitation logistics and raptor research data processing[cite: 46, 49].
                     </p>
                 </div>
-
-                <div class="lg:col-span-6 w-full">
-                    <div class="inset-screen w-full h-64 flex flex-col p-3">
-                        <div class="flex justify-between text-xs opacity-50 mb-2 screen-content">
-                            <span>OSC 1</span>
-                            <span>TIME/DIV: 5ms</span>
-                        </div>
-                        <canvas id="heroOscilloscope" class="w-full flex-1 rounded cursor-crosshair screen-content"></canvas>
-                        <div class="flex justify-between mt-2 text-[10px] screen-content">
-                            <span>FREQ: <span id="freqVal">0</span> Hz</span>
-                            <span>AMP: <span id="ampVal">0.0</span> V</span>
-                        </div>
-                    </div>
+                <div class="border-l border-zinc-800 pl-8">
+                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4">Leadership</h5>
+                    <p class="text-zinc-500 text-sm leading-relaxed">
+                        Campus Organizer for GBBC [cite: 53], Committee member at Sorriso Photo Club [cite: 58], and Technical Committee at Brahmand[cite: 59].
+                    </p>
                 </div>
-            </header>
-
-            <section class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16">
-                <div class="md:col-span-4 border-2 border-zinc-400 p-5 rounded relative bg-[#f9f9f9]">
-                    <div class="absolute -top-3 left-4 bg-[#f9f9f9] px-2 data-label">ACADEMIC_SYS</div>
-                    <h4 class="font-bold text-lg mb-1 text-zinc-800">Pandit Deendayal Energy University</h4>
-                    <p class="text-sm font-medium text-zinc-600 mb-4">B.Tech in Electronics & Communication</p>
-                    
-                    <ul class="font-mono text-xs text-zinc-700 space-y-2">
-                        <li class="flex justify-between border-b border-zinc-300 pb-1"><span>CGPA:</span> <strong>8.62/10.0</strong></li>
-                        <li class="flex justify-between border-b border-zinc-300 pb-1"><span>Recent SGPA:</span> <strong>9.17 / 8.84</strong></li>
-                        <li class="flex justify-between border-b border-zinc-300 pb-1"><span>Status:</span> <strong>Class of 2027</strong></li>
-                        <li class="flex justify-between pb-1"><span>Loc:</span> <strong>Gandhinagar, GJ</strong></li>
-                    </ul>
-                </div>
-
-                <div class="md:col-span-8 border-2 border-zinc-400 p-5 rounded relative bg-[#f9f9f9]">
-                    <div class="absolute -top-3 left-4 bg-[#f9f9f9] px-2 data-label">TECHNICAL_SPECS</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mt-2">
-                        <div>
-                            <div class="data-label border-b border-zinc-300 pb-1 mb-2 text-zinc-500">SIMULATION & DESIGN</div>
-                            <p class="text-sm font-medium text-zinc-800">MATLAB, Simulink, LTspice, Tina-TI, Logisim, Proteus</p>
-                        </div>
-                        <div>
-                            <div class="data-label border-b border-zinc-300 pb-1 mb-2 text-zinc-500">PROGRAMMING</div>
-                            <p class="text-sm font-medium text-zinc-800">Python (NumPy, Matplotlib), C/C++ (AVR/ATmega), Assembly (8086)</p>
-                        </div>
-                        <div>
-                            <div class="data-label border-b border-zinc-300 pb-1 mb-2 text-zinc-500">HARDWARE INTEGRATION</div>
-                            <p class="text-sm font-medium text-zinc-800">Raspberry Pi, Asus Tinker Board, AVR (ATmega2560), Sensors</p>
-                        </div>
-                        <div>
-                            <div class="data-label border-b border-zinc-300 pb-1 mb-2 text-zinc-500">CORE DOMAINS</div>
-                            <p class="text-sm font-medium text-zinc-800">Mixed-Signal Design, DSP, Audio Engineering, Embedded Systems</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="mb-16">
-                <h3 class="text-xl font-bold mb-6 engraved border-b-2 border-zinc-400 pb-2">ACTIVE PROJECTS</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    <div class="bg-[#f0f0f0] border border-zinc-400 p-5 shadow-[inset_1px_1px_0_white] flex flex-col justify-between group hover:bg-[#e8e8e8] transition-colors">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-bold text-zinc-800 leading-tight">Minimoog Poly-Synth</h4>
-                                <span class="data-label text-[9px] bg-red-100 text-red-800 border border-red-300 px-1">ONGOING</span>
-                            </div>
-                            <p class="text-sm text-zinc-600 font-medium mb-4">Developing an 8-voice virtual analog synthesis engine in C++ with transistor ladder filter emulation for real-time embedded performance.</p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap data-label text-[9px]">
-                            <span class="bg-zinc-300 px-2 py-1">C++</span><span class="bg-zinc-300 px-2 py-1">DSP</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#f0f0f0] border border-zinc-400 p-5 shadow-[inset_1px_1px_0_white] flex flex-col justify-between hover:bg-[#e8e8e8] transition-colors">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-bold text-zinc-800 leading-tight">ΔΣ Modulator Design</h4>
-                                <span class="data-label text-[9px] text-zinc-500">2026</span>
-                            </div>
-                            <p class="text-sm text-zinc-600 font-medium mb-4">Modeled a 2nd-order Delta-Sigma modulator to analyze noise-shaping for audio. Validated signal flow, analyzing OSR and SNR trade-offs.</p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap data-label text-[9px]">
-                            <span class="bg-zinc-300 px-2 py-1">MATLAB</span><span class="bg-zinc-300 px-2 py-1">SIMULINK</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-amber-50/50 border border-amber-300 p-5 shadow-[inset_1px_1px_0_white] flex flex-col justify-between hover:bg-amber-100/50 transition-colors">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-bold text-zinc-800 leading-tight">MATLAB Challenge</h4>
-                                <span class="data-label text-[9px] bg-amber-200 text-amber-800 px-1">🏆 WINNER '25</span>
-                            </div>
-                            <p class="text-sm text-zinc-600 font-medium mb-4">Led team to develop a multi-variable solar panel positioning algorithm integrating sun path, shadow casting, and atmospheric conditions.</p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap data-label text-[9px]">
-                            <span class="bg-zinc-300 px-2 py-1">SIMULINK</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#f0f0f0] border border-zinc-400 p-5 shadow-[inset_1px_1px_0_white] flex flex-col justify-between hover:bg-[#e8e8e8] transition-colors">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-bold text-zinc-800 leading-tight">Antenna Array Tool</h4>
-                                <span class="data-label text-[9px] text-zinc-500">2024</span>
-                            </div>
-                            <p class="text-sm text-zinc-600 font-medium mb-4">Simulation tool to visualize beamforming. Implemented algorithms for phase shifting, highly relevant for audio spatial applications.</p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap data-label text-[9px]">
-                            <span class="bg-zinc-300 px-2 py-1">MATLAB</span><span class="bg-zinc-300 px-2 py-1">DSP</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#f0f0f0] border border-zinc-400 p-5 shadow-[inset_1px_1px_0_white] flex flex-col justify-between hover:bg-[#e8e8e8] transition-colors">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-bold text-zinc-800 leading-tight">Campus Navigation</h4>
-                                <span class="data-label text-[9px] text-zinc-500">2023</span>
-                            </div>
-                            <p class="text-sm text-zinc-600 font-medium mb-4">Mapped university buildings using QGIS and deployed a web app with an autocomplete search feature accessed via QR codes.</p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap data-label text-[9px]">
-                            <span class="bg-zinc-300 px-2 py-1">QGIS</span><span class="bg-zinc-300 px-2 py-1">WEB</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#f0f0f0] border border-zinc-400 p-5 shadow-[inset_1px_1px_0_white] flex flex-col justify-between hover:bg-[#e8e8e8] transition-colors">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h4 class="font-bold text-zinc-800 leading-tight">TA Robot</h4>
-                                <span class="data-label text-[9px] text-zinc-500">2019</span>
-                            </div>
-                            <p class="text-sm text-zinc-600 font-medium mb-4">Built a functional robot assistant integrating Asus Tinker Board for AI processing and Arduino for motor control subsystem.</p>
-                        </div>
-                        <div class="flex gap-2 flex-wrap data-label text-[9px]">
-                            <span class="bg-zinc-300 px-2 py-1">HARDWARE</span><span class="bg-zinc-300 px-2 py-1">ARDUINO</span>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                
-                <div>
-                    <h3 class="text-xl font-bold mb-4 engraved border-b border-zinc-400 pb-2">EXPERIENCE LOG</h3>
-                    <div class="bg-zinc-200 p-4 border border-zinc-300 rounded relative">
-                        <div class="w-2 h-2 bg-zinc-400 rounded-full absolute top-2 right-2"></div>
-                        <h4 class="font-bold text-zinc-800">Summer Intern <span class="text-zinc-500 font-normal text-sm">| Jun 2024</span></h4>
-                        <h5 class="text-sm font-semibold text-zinc-600 mb-2">Jivdaya Charitable Trust</h5>
-                        <ul class="list-disc list-outside ml-4 text-sm text-zinc-700 font-medium space-y-1">
-                            <li>Assisted in veterinary support & operational logistics for wildlife rehab.</li>
-                            <li>Contributed to raptor research by processing clinical/behavioral data.</li>
-                            <li>Demonstrated effective crisis management in high-pressure field environment.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-xl font-bold mb-4 engraved border-b border-zinc-400 pb-2">COMMUNITY & OPERATIONS</h3>
-                    <div class="bg-zinc-200 p-4 border border-zinc-300 rounded space-y-3 font-medium text-sm text-zinc-700">
-                        <p><strong class="text-zinc-900">GBBC Organizer:</strong> Coordinated the Great Backyard Bird Count and managed data.</p>
-                        <p><strong class="text-zinc-900">Sorriso (Photo Club):</strong> Maintained visual archives and event documentation.</p>
-                        <p><strong class="text-zinc-900">Brahmand (Space Club):</strong> Built dual-axis sun tracker; integrated sensors/servos.</p>
-                        <p><strong class="text-zinc-900">Conservation Photo:</strong> Documenting local biodiversity to support ecological awareness.</p>
-                    </div>
-                </div>
-
-            </section>
-
-            <footer class="border-t-2 border-zinc-400 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-zinc-600">
-                <div class="data-label text-[9px] space-y-1 text-center md:text-left">
-                    <p>SERIAL: KP-2026-ENG</p>
-                    <p>LOC: 23.2156° N, 72.6369° E</p>
-                    <p>SYS_STATUS: READY</p>
-                </div>
-                <div class="flex flex-wrap justify-center gap-6 data-label text-[10px] font-bold">
-                    <a href="https://github.com/techiitheblob/" class="hover:text-black">GITHUB</a>
-                    <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-black">LINKEDIN</a>
-                    <a href="https://kahaanjpeg.mypixieset.com/" class="hover:text-black">KAHAAN.JPEG</a>
-                </div>
-            </footer>
-
+            </div>
         </div>
+    </section>
 
-        <div class="w-12 rack-ear rounded-r-lg flex flex-col justify-between items-center py-10 relative hidden md:flex" style="transform: scaleX(-1);">
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
-            <div class="w-6 h-8 bg-black/20 rounded-full inset-shadow"></div>
+    <footer class="p-20 text-center border-t border-zinc-900">
+        <h2 class="text-6xl md:text-8xl font-black mb-12 reveal">LETS WORK.</h2>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-8 font-mono text-xs opacity-50 uppercase tracking-widest">
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-white transition">Email</a>
+            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-white transition">LinkedIn</a>
+            <a href="https://github.com/techiitheblob/" class="hover:text-white transition">GitHub</a>
+            <a href="https://kahaanjpeg.mypixieset.com/" class="hover:text-white transition text-accent">Photography Portfolio</a>
         </div>
-    </main>
+        <div class="mt-20 text-[10px] opacity-20 uppercase tracking-widest">
+            Kahaan Padiya © 2026 // Class of 2027 // Roll: 23BEC009
+        </div>
+    </footer>
 
     <script>
-        // System State
-        let isPowerOn = false;
-        const body = document.getElementById('systemBody');
-        const powerBtn = document.getElementById('powerBtn');
-
-        // Abstracted Power Toggle Function
-        function togglePower() {
-            isPowerOn = !isPowerOn;
-            if(isPowerOn) {
-                body.classList.add('power-on');
-            } else {
-                body.classList.remove('power-on');
-                // Reset scope readouts
-                document.getElementById('freqVal').innerText = "0";
-                document.getElementById('ampVal').innerText = "0.0";
-            }
-        }
-
-        // Master Power Switch Manual Click
-        powerBtn.addEventListener('click', togglePower);
-
-        // Auto Power-On after page load (500ms delay)
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                if (!isPowerOn) {
-                    togglePower();
-                }
-            }, 500);
-        });
-
-        // Initialize VU Meter LEDs
-        const vuContainer = document.getElementById('vuMeter');
-        const numLeds = 12;
-        const leds = [];
-        for(let i=0; i<numLeds; i++) {
-            const led = document.createElement('div');
-            led.className = 'vu-led';
-            vuContainer.appendChild(led);
-            leds.push(led);
-        }
-
-        // Mouse Speed to VU Meter logic
-        let lastMouseTime = Date.now();
-        let lastMouseX = 0;
-        let lastMouseY = 0;
-        let currentLevel = 0;
-
-     document.addEventListener('mousemove', (e) => {
-            if(!isPowerOn) return;
-            const now = Date.now();
-            const dt = now - lastMouseTime;
-            const dx = e.clientX - lastMouseX;
-            const dy = e.clientY - lastMouseY;
-            const distance = Math.sqrt(dx*dx + dy*dy);
-            
-            // SENSITIVITY MULTIPLIER (Increase this number to make it more sensitive. 3.5 is a great sweet spot)
-            const sensitivity = 3.5; 
-            const speed = Math.min((distance * sensitivity) / (dt || 1), 50); // cap speed
-            
-            // smooth level up
-            currentLevel = Math.max(currentLevel, speed / 50);
-            
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
-            lastMouseTime = now;
-        });
-
-        // VU Decay loop
-        setInterval(() => {
-            if(!isPowerOn) {
-                leds.forEach(led => led.className = 'vu-led');
-                return;
-            }
-            currentLevel = Math.max(0, currentLevel - 0.05); // decay
-            const activeCount = Math.floor(currentLevel * numLeds);
-            
-            leds.forEach((led, i) => {
-                led.className = 'vu-led';
-                if(i < activeCount) {
-                    if(i < 7) led.classList.add('active-green');
-                    else if(i < 10) led.classList.add('active-yellow');
-                    else led.classList.add('active-red');
+        // Intersection Observer for Reveal Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
-        }, 50);
+        }, { threshold: 0.1 });
 
-        // Oscilloscope Logic
-        const canvas = document.getElementById('heroOscilloscope');
-        const ctx = canvas.getContext('2d');
-        const freqLabel = document.getElementById('freqVal');
-        const ampLabel = document.getElementById('ampVal');
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        let mouseX = 0;
-        let mouseY = 0;
-
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth - 24; // padding adj
-            canvas.height = canvas.parentElement.clientHeight - 40;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        canvas.addEventListener('mousemove', (e) => {
-            if(!isPowerOn) return;
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-            
-            const freq = Math.max(10, Math.round((mouseX / canvas.width) * 1000));
-            const amp = Math.max(0, (1 - (mouseY / canvas.height))).toFixed(2);
-            freqLabel.innerText = `${freq}`;
-            ampLabel.innerText = `${amp}`;
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
-
-        function drawGrid() {
-            ctx.strokeStyle = 'rgba(0, 255, 0, 0.15)';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            // Vertical lines
-            for(let x=0; x<canvas.width; x+=20) { ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); }
-            // Horizontal lines
-            for(let y=0; y<canvas.height; y+=20) { ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); }
-            // Center crosshairs
-            ctx.moveTo(canvas.width/2, 0); ctx.lineTo(canvas.width/2, canvas.height);
-            ctx.moveTo(0, canvas.height/2); ctx.lineTo(canvas.width, canvas.height/2);
-            ctx.stroke();
-        }
-
-        function animateHero() {
-            if(isPowerOn) {
-                // Phosphor decay effect (leave a trail)
-                ctx.fillStyle = 'rgba(17, 17, 17, 0.3)'; 
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                drawGrid();
-                
-                // Amber trace
-                ctx.strokeStyle = '#ffb000'; 
-                ctx.lineWidth = 2; 
-                ctx.beginPath();
-                
-                const frequency = (mouseX / canvas.width) * 0.1 || 0.05;
-                const amplitude = (canvas.height / 2) - (mouseY / canvas.height * 100) || 50;
-                
-                // Add a little noise/wobble for analog feel
-                const noise = Math.random() * 2 - 1;
-
-                for (let x = 0; x < canvas.width; x++) {
-                    const y = (canvas.height / 2) + Math.sin(x * frequency + Date.now() * 0.01) * amplitude + noise;
-                    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-                
-                // Glow effect
-                ctx.shadowColor = '#ffb000';
-                ctx.shadowBlur = 10;
-                ctx.stroke();
-                ctx.shadowBlur = 0; // reset
-            } else {
-                ctx.fillStyle = '#111';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-            requestAnimationFrame(animateHero);
-        }
-        animateHero();
     </script>
 </body>
 </html>
-
