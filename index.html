@@ -8,13 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bg: #0f172a;         /* Slate 900 */
-            --panel: #1e293b;      /* Slate 800 */
-            --border: #334155;     /* Slate 700 */
-            --text-main: #f8fafc;  /* Slate 50 */
-            --text-muted: #94a3b8; /* Slate 400 */
-            --accent: #06b6d4;     /* Cyan 500 */
-            --accent-glow: rgba(6, 182, 212, 0.3);
+            --bg: #0f172a;         
+            --panel: #1e293b;      
+            --border: #334155;     
+            --text-main: #f8fafc;  
+            --text-muted: #94a3b8; 
+            --accent: #06b6d4;     
+            --accent-glow: rgba(6, 182, 212, 0.4);
         }
         
         body { 
@@ -22,47 +22,33 @@
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden;
-            /* Schematic Grid Background */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
         }
         
-        /* Reversible & Slower Reveal Animations */
         .reveal { 
             opacity: 0; 
             filter: blur(15px); 
             transform: translateY(30px); 
-            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1); 
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
         }
-        .reveal.active { 
-            opacity: 1; 
-            filter: blur(0px); 
-            transform: translateY(0px); 
-        }
+        .reveal.active { opacity: 1; filter: blur(0px); transform: translateY(0px); }
 
-        /* Project Expansion Logic */
         .project-card { 
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
-            cursor: pointer; 
-            height: 140px; 
-            overflow: hidden; 
+            cursor: pointer; height: 140px; overflow: hidden; 
             border-bottom: 1px solid var(--border); 
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
         }
         .project-card.expanded { 
-            height: auto; 
-            min-height: 350px; 
-            background: var(--panel); 
-            border-color: var(--accent); 
-            padding-bottom: 3rem; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            height: auto; min-height: 350px; 
+            background: var(--panel); border-color: var(--accent); 
+            padding-bottom: 3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         @media (min-width: 768px) { .project-card { height: 160px; } }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
@@ -71,26 +57,23 @@
         .huge-text { font-size: clamp(3rem, 12vw, 10rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* Full Page PCB Background Traces */
         .pcb-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; width: 100vw; height: 100vh; opacity: 0.6; }
         .trace { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 3000; stroke-dashoffset: 3000; transition: stroke-dashoffset 0.1s linear; }
 
-        /* Telemetry Widget */
         .telemetry-widget { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); border-radius: 6px; }
 
-        /* Physical IC Pinout Styling */
+        /* Updated Physical IC Styling */
         .ic-package { background: #111827; border: 2px solid #374151; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .ic-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 20px; background: var(--bg); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 2px solid #374151; }
-        .pin { width: 40px; height: 12px; background: linear-gradient(90deg, #9ca3af, #d1d5db); border: 1px solid #4b5563; cursor: pointer; transition: all 0.2s; position: relative; z-index: 10; }
-        .pin:hover { background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); width: 48px; }
-        .pin-left { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-right: -4px; }
-        .pin-left:hover { transform: translateX(-8px); }
-        .pin-right { border-top-right-radius: 4px; border-bottom-right-radius: 4px; margin-left: -4px; }
-        .pin-right:hover { transform: translateX(8px); }
-        .pin-label { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0; transition: all 0.3s; white-space: nowrap; font-size: 12px; font-weight: bold; pointer-events: none; }
-        .pin-left .pin-label { right: 120%; color: var(--accent); text-align: right; }
-        .pin-right .pin-label { left: 120%; color: var(--accent); text-align: left; }
-        .pin:hover .pin-label { opacity: 1; text-shadow: 0 0 8px var(--accent-glow); }
+        .ic-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 16px; background: var(--bg); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 2px solid #374151; }
+        
+        /* New explicit pin connecting lines */
+        .pin-line-left { width: 20px; height: 2px; background: #475569; transition: all 0.3s; }
+        .pin-line-right { width: 20px; height: 2px; background: #475569; transition: all 0.3s; }
+        .pin-group:hover .pin-line-left, .pin-group:hover .pin-line-right { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .pin-group:hover .pin-head { background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        
+        /* The physical metal pin */
+        .pin-head { width: 16px; height: 10px; background: #9ca3af; transition: all 0.3s; }
     </style>
 </head>
 <body class="selection:bg-[#06b6d4] selection:text-white">
@@ -99,9 +82,6 @@
         <path class="trace trace-scroll" d="M -100 100 L 200 100 L 300 200 L 300 800 L 400 900 L 1100 900" />
         <path class="trace trace-scroll" d="M 900 -100 L 900 300 L 700 500 L 700 1100" />
         <path class="trace trace-scroll" d="M 0 500 L 100 500 L 150 450 L 500 450 L 550 500 L 1100 500" opacity="0.5"/>
-        <circle cx="200" cy="100" r="8" fill="var(--border)" stroke="var(--accent)" stroke-width="2"/>
-        <circle cx="700" cy="500" r="8" fill="var(--border)" stroke="var(--accent)" stroke-width="2"/>
-        <circle cx="500" cy="450" r="8" fill="var(--border)" stroke="var(--accent)" stroke-width="2"/>
     </svg>
 
     <div class="fixed bottom-6 right-6 p-4 border border-slate-700 telemetry-widget font-mono text-xs text-slate-400 z-50 pointer-events-none hidden md:block">
@@ -144,7 +124,10 @@
     <section id="work" class="px-6 md:px-12 py-24 md:py-32">
         <div class="flex items-center gap-4 mb-16 md:mb-20 reveal">
             <div class="h-[1px] bg-slate-700 flex-1"></div>
-            <h2 class="text-xs md:text-sm uppercase tracking-[0.2em] text-slate-400 font-bold">Project Repository <span class="text-cyan-400 font-normal ml-2">(Click to Expand)</span></h2>
+            <h2 class="text-xs md:text-sm uppercase tracking-[0.2em] text-slate-400 font-bold flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                Project Repository <span class="text-cyan-400 font-normal ml-2 hidden md:inline">(Click rows to expand details)</span>
+            </h2>
             <div class="h-[1px] bg-slate-700 flex-1"></div>
         </div>
         
@@ -152,10 +135,8 @@
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
                     <span class="text-slate-500 font-mono text-sm">01</span>
-                    <h3 class="text-2xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-6 md:ml-12">Minimoog Poly-Synth</h3>
-                    <div class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 group-hover:border-cyan-400 transition-all">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </div>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">Minimoog Poly-Synth</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 group-hover:border-cyan-400 transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
                     <p class="text-slate-300 text-base leading-relaxed">
@@ -172,10 +153,8 @@
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
                     <span class="text-slate-500 font-mono text-sm">02</span>
-                    <h3 class="text-2xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-6 md:ml-12">ΔΣ Modulator Simulation</h3>
-                    <div class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </div>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">ΔΣ Modulator Sim</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
                     <p class="text-slate-300 text-base leading-relaxed">
@@ -191,10 +170,8 @@
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
                     <span class="text-slate-500 font-mono text-sm">03</span>
-                    <h3 class="text-2xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-6 md:ml-12">Solar Positioning Alg.</h3>
-                    <div class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </div>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">Solar Tracker Alg.</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
                     <p class="text-slate-300 text-base leading-relaxed">
@@ -210,42 +187,46 @@
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
                     <span class="text-slate-500 font-mono text-sm">04</span>
-                    <h3 class="text-2xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-6 md:ml-12">TA Robot Subsystem</h3>
-                    <div class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </div>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">TA Robot Logic</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
                     <p class="text-slate-300 text-base leading-relaxed">
-                        Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control. Designed enclosures and mounts.
+                        Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control.
                     </p>
                     <div class="space-y-4 font-mono">
                         <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Hardware & Design</div>
-                        <p class="text-sm text-cyan-400">Asus Tinker Board | Arduino | SolidWorks / AutoCAD</p>
+                        <p class="text-sm text-cyan-400">Asus Tinker Board | Arduino | SolidWorks</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="specs" class="px-6 md:px-12 py-24 md:py-32 bg-slate-900/50 border-t border-slate-800 backdrop-blur-sm">
+    <section id="specs" class="px-6 md:px-12 py-24 md:py-32 bg-slate-900/80 border-t border-slate-800 backdrop-blur-md">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-20">
             
             <div class="lg:col-span-5 reveal" id="terminal-trigger">
-                <h4 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                     System Initialization
                 </h4>
-                <p class="text-slate-400 text-sm mb-8">Hardware and software proficiencies loaded via secure shell.</p>
+                <p class="text-slate-400 text-sm mb-8">Hardware and software proficiencies loading via secure shell...</p>
                 
-                <div class="bg-[#0f111a] border border-slate-700 rounded-lg overflow-hidden shadow-2xl">
-                    <div class="bg-slate-800 px-4 py-2 flex items-center gap-2 border-b border-slate-700">
-                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                        <span class="ml-4 text-xs text-slate-400 font-mono tracking-wider flex-1 text-center pr-8">user@kahaan-sys: ~/skills</span>
+                <div class="bg-[#0f111a] border border-slate-600 rounded-lg overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                    <div class="bg-slate-800 px-4 py-2 flex items-center gap-3 border-b border-slate-600">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-slate-400 font-mono tracking-wider ml-4">user@kahaan-sys: ~</span>
+                        <div class="ml-auto flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                            <span class="text-[10px] text-green-400 font-mono uppercase font-bold tracking-widest">Live Log</span>
+                        </div>
                     </div>
-                    <div class="p-5 h-72 overflow-y-auto font-mono text-xs md:text-sm text-slate-300 leading-relaxed relative">
+                    <div class="p-5 h-72 overflow-y-auto font-mono text-xs md:text-sm text-slate-300 leading-relaxed relative" id="term-container">
                         <div id="terminal-output" class="space-y-1"></div>
                         <span id="terminal-cursor" class="text-cyan-400 animate-pulse hidden block mt-1">█</span>
                     </div>
@@ -253,60 +234,85 @@
             </div>
 
             <div class="lg:col-span-7 reveal" style="transition-delay: 0.2s;">
-                <h4 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M22 16h-4"/><path d="M6 16H2"/><path d="M18 20v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg>
-                    Architecture Diagram
+                    Architecture Pinout
                 </h4>
-                <p class="text-slate-400 text-sm mb-12">Hover over the physical pins below to inspect domain expertise and core competencies.</p>
+                <p class="text-slate-400 text-sm mb-8">Hover over the designated pins below to read detailed module data.</p>
                 
-                <div class="flex items-center justify-center font-mono text-xs mt-4">
+                <div class="flex items-center justify-center font-mono text-xs mt-8 relative">
                     
-                    <div class="flex flex-col gap-5 text-right z-10">
-                        <div class="pin pin-left" onmouseover="updatePinout('ADC/DAC', 'Mixed-Signal VLSI, Delta-Sigma Modulators')">
-                            <span class="pin-label">PIN_01</span>
-                        </div>
-                        <div class="pin pin-left" onmouseover="updatePinout('DSP_CORE', 'Digital Signal Processing, Audio Engineering')">
-                            <span class="pin-label">PIN_02</span>
-                        </div>
-                        <div class="pin pin-left" onmouseover="updatePinout('LANG_C', 'C/C++, Assembly (8086), Python')">
-                            <span class="pin-label">PIN_03</span>
-                        </div>
-                        <div class="pin pin-left" onmouseover="updatePinout('SIM_ENV', 'MATLAB, Simulink, LTspice, Proteus')">
-                            <span class="pin-label">PIN_04</span>
-                        </div>
-                        <div class="pin pin-left" onmouseover="updatePinout('CAD_MODEL', 'AutoCAD, SolidWorks, SketchUp')">
-                            <span class="pin-label">PIN_05</span>
-                        </div>
-                    </div>
-                    
-                    <div class="w-32 h-72 md:w-40 md:h-80 ic-package rounded-sm flex items-center justify-center">
-                        <div class="ic-notch"></div>
-                        <div class="absolute top-4 left-4 w-3 h-3 rounded-full bg-slate-700 shadow-inner"></div>
-                        <span class="rotate-90 text-slate-500 font-bold tracking-widest text-xl md:text-2xl opacity-50">KP-2027</span>
+                    <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-cyan-900/40 text-cyan-400 border border-cyan-500/50 px-3 py-1 rounded text-[10px] font-bold tracking-widest animate-pulse pointer-events-none">
+                        SCANNING... HOVER PINS TO INSPECT
                     </div>
 
-                    <div class="flex flex-col gap-5 text-left z-10">
-                        <div class="pin pin-right" onmouseover="updatePinout('VCC_PWR', 'Power Systems, Solar Optimization Algorithms')">
-                            <span class="pin-label">PIN_10</span>
+                    <div class="flex flex-col gap-6 text-right z-10">
+                        <div class="flex items-center justify-end group cursor-pointer pin-group" onmouseover="updatePinout('ADC/DAC', 'Mixed-Signal VLSI, Delta-Sigma Modulators')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2">PIN_01: ADC/DAC</span>
+                            <div class="pin-line-left"></div>
+                            <div class="pin-head rounded-l-sm"></div>
                         </div>
-                        <div class="pin pin-right" onmouseover="updatePinout('PWM_OUT', 'Motor Control, Robotics, Arduino')">
-                            <span class="pin-label">PIN_09</span>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group" onmouseover="updatePinout('DSP_CORE', 'Digital Signal Processing, Audio Engineering')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2">PIN_02: DSP_CORE</span>
+                            <div class="pin-line-left"></div>
+                            <div class="pin-head rounded-l-sm"></div>
                         </div>
-                        <div class="pin pin-right" onmouseover="updatePinout('I2S_BUS', 'Audio Synthesis, Transistor Ladder Filters')">
-                            <span class="pin-label">PIN_08</span>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group" onmouseover="updatePinout('LANG_C', 'C/C++, Assembly (8086), Python')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2">PIN_03: C_CPP</span>
+                            <div class="pin-line-left"></div>
+                            <div class="pin-head rounded-l-sm"></div>
                         </div>
-                        <div class="pin pin-right" onmouseover="updatePinout('I2C/SPI', 'Sensor Integration, ATmega2560, Raspberry Pi')">
-                            <span class="pin-label">PIN_07</span>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group" onmouseover="updatePinout('SIM_ENV', 'MATLAB, Simulink, LTspice, Proteus')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2">PIN_04: MATLAB</span>
+                            <div class="pin-line-left"></div>
+                            <div class="pin-head rounded-l-sm"></div>
                         </div>
-                        <div class="pin pin-right" onmouseover="updatePinout('SYS_GND', 'Hardware Prototyping & System Integration')">
-                            <span class="pin-label">PIN_06</span>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group" onmouseover="updatePinout('CAD_MODEL', 'AutoCAD, SolidWorks, SketchUp')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2">PIN_05: CAD_SYS</span>
+                            <div class="pin-line-left"></div>
+                            <div class="pin-head rounded-l-sm"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-32 h-72 md:w-36 md:h-80 ic-package rounded-sm flex items-center justify-center">
+                        <div class="ic-notch"></div>
+                        <div class="absolute top-4 left-4 w-3 h-3 rounded-full bg-slate-700 shadow-inner border border-slate-800"></div>
+                        <span class="rotate-90 text-slate-500 font-bold tracking-widest text-xl md:text-2xl opacity-50 drop-shadow-md">KP-2027</span>
+                    </div>
+
+                    <div class="flex flex-col gap-6 text-left z-10">
+                        <div class="flex items-center group cursor-pointer pin-group" onmouseover="updatePinout('VCC_PWR', 'Power Systems, Solar Optimization Algorithms')">
+                            <div class="pin-head rounded-r-sm"></div>
+                            <div class="pin-line-right"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2">VCC_PWR :PIN_10</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group" onmouseover="updatePinout('PWM_OUT', 'Motor Control, Robotics, Arduino')">
+                            <div class="pin-head rounded-r-sm"></div>
+                            <div class="pin-line-right"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2">PWM_OUT :PIN_09</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group" onmouseover="updatePinout('I2S_BUS', 'Audio Synthesis, Transistor Ladder Filters')">
+                            <div class="pin-head rounded-r-sm"></div>
+                            <div class="pin-line-right"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2">I2S_BUS :PIN_08</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group" onmouseover="updatePinout('I2C/SPI', 'Sensor Integration, ATmega2560, Raspberry Pi')">
+                            <div class="pin-head rounded-r-sm"></div>
+                            <div class="pin-line-right"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2">I2C_SPI :PIN_07</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group" onmouseover="updatePinout('SYS_GND', 'Hardware Prototyping & System Integration')">
+                            <div class="pin-head rounded-r-sm"></div>
+                            <div class="pin-line-right"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2">SYS_GND :PIN_06</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-12 bg-slate-800 border border-slate-700 rounded p-4 h-24 flex flex-col justify-center items-center text-center">
-                    <div id="pin-title" class="text-cyan-400 font-bold font-mono text-sm mb-1 uppercase tracking-widest">Awaiting Input...</div>
-                    <div id="pin-desc" class="text-slate-400 text-sm">Hover over an IC pin to view module details.</div>
+                <div class="mt-12 bg-slate-900 border border-slate-700 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
+                    <div id="pin-title" class="text-cyan-400 font-bold font-mono text-sm mb-2 uppercase tracking-widest">>> WAITING FOR INTERRUPT <<</div>
+                    <div id="pin-desc" class="text-slate-400 text-sm font-medium">Select a pin above to read the module specification.</div>
                 </div>
 
             </div>
@@ -357,7 +363,7 @@
             document.getElementById('tel-bar').style.width = (scrollPercent * 100) + '%';
         });
 
-        // 3. Live Telemetry Widget Logic
+        // 3. Live Telemetry Widget
         const telX = document.getElementById('tel-x');
         const telY = document.getElementById('tel-y');
 
@@ -366,7 +372,7 @@
             telY.innerText = e.clientY.toString().padStart(4, '0');
         });
 
-        // 4. Authentic Terminal Boot Sequence Logic (Updated with CAD)
+        // 4. Authentic Terminal Boot Sequence
         const bootMessages = [
             "<span class='text-slate-500'>$</span> ./init_hardware.sh",
             "Loading bootloader... <span class='text-green-400'>[OK]</span>",
@@ -376,18 +382,19 @@
             "Initializing System Modules...",
             "  -> Loaded: Mixed-Signal Design Patterns",
             "  -> Loaded: Audio Engineering (DSP)",
-            "  -> Loaded: 3D CAD (AutoCAD, SolidWorks, SketchUp)",
+            "  -> Loaded: 3D CAD (AutoCAD, SolidWorks)",
             "Verifying Simulation Environments:",
             "  -> MATLAB <span class='text-green-400'>[OK]</span>",
             "  -> Simulink <span class='text-green-400'>[OK]</span>",
-            "  -> LTspice <span class='text-green-400'>[OK]</span>",
+            "  -> Proteus <span class='text-green-400'>[OK]</span>",
             "Compiling Embedded C++ toolchain... done.",
-            "<span class='text-amber-400'>Warning: Over-Sampling Ratio (OSR) high.</span>",
+            "<span class='text-amber-400'>Warning: Over-Sampling Ratio (OSR) optimal.</span>",
             "System initialization complete.",
             "<span class='text-slate-500'>$</span> _"
         ];
         
         const termOutput = document.getElementById('terminal-output');
+        const termContainer = document.getElementById('term-container');
         const termCursor = document.getElementById('terminal-cursor');
         let bootTriggered = false;
 
@@ -404,11 +411,11 @@
                         p.innerHTML = bootMessages[i];
                         termOutput.appendChild(p);
                         i++;
-                        termOutput.parentElement.scrollTop = termOutput.parentElement.scrollHeight;
+                        termContainer.scrollTop = termContainer.scrollHeight;
                     } else {
                         clearInterval(typeInterval);
                     }
-                }, 250);
+                }, 200);
             } else if (!entries[0].isIntersecting) {
                 bootTriggered = false;
                 termOutput.innerHTML = '';
@@ -423,18 +430,20 @@
         const pinDesc = document.getElementById('pin-desc');
         
         function updatePinout(title, desc) {
-            pinTitle.innerText = `MODULE: ${title}`;
+            pinTitle.innerText = `MODULE SELECTED: ${title}`;
+            pinTitle.classList.add('text-cyan-300');
             pinDesc.innerText = desc;
-            pinDesc.classList.add('text-slate-200');
-            pinDesc.classList.remove('text-slate-400');
+            pinDesc.classList.add('text-slate-200', 'font-bold');
+            pinDesc.classList.remove('text-slate-400', 'font-medium');
         }
         
-        document.querySelectorAll('.pin').forEach(pin => {
+        document.querySelectorAll('.pin-group').forEach(pin => {
             pin.addEventListener('mouseleave', () => {
-                pinTitle.innerText = 'Awaiting Input...';
-                pinDesc.innerText = 'Hover over an IC pin to view module details.';
-                pinDesc.classList.remove('text-slate-200');
-                pinDesc.classList.add('text-slate-400');
+                pinTitle.innerText = '>> WAITING FOR INTERRUPT <<';
+                pinTitle.classList.remove('text-cyan-300');
+                pinDesc.innerText = 'Select a pin above to read the module specification.';
+                pinDesc.classList.remove('text-slate-200', 'font-bold');
+                pinDesc.classList.add('text-slate-400', 'font-medium');
             });
         });
     </script>
