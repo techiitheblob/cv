@@ -15,8 +15,11 @@
         .reveal.active { opacity: 1; filter: blur(0px); transform: translateY(0px); }
 
         /* Project Expansion Logic */
-        .project-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; height: 180px; overflow: hidden; border-bottom: 1px solid #333; }
-        .project-card.expanded { height: 450px; background: #111; border-color: var(--accent); padding-bottom: 2rem; }
+        .project-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; height: 140px; overflow: hidden; border-bottom: 1px solid #222; }
+        .project-card.expanded { height: auto; min-height: 400px; background: #111; border-color: var(--accent); padding-bottom: 3rem; }
+        @media (min-width: 768px) {
+            .project-card { height: 180px; }
+        }
         
         /* Icon Flip Animation */
         .icon-box { transition: transform 0.6s; transform-style: preserve-3d; }
@@ -32,30 +35,30 @@
 </head>
 <body class="selection:bg-green-500 selection:text-black">
 
-    <nav class="fixed top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
+    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 mix-blend-difference">
         <span class="font-bold tracking-tighter text-xl">KP / 27</span>
-        <div class="space-x-8 text-xs uppercase tracking-widest font-medium opacity-60">
+        <div class="space-x-4 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-medium opacity-60">
             <a href="#work" class="hover:opacity-100 transition">Work</a>
-            <a href="#about" class="hover:opacity-100 transition">About</a>
+            <a href="#specs" class="hover:opacity-100 transition">Specs</a>
             <a href="mailto:Kahaanpadiya@gmail.com" class="hover:opacity-100 transition">Contact</a>
         </div>
     </nav>
 
-    <section class="min-h-screen flex flex-col justify-center px-8 pt-20">
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-8 pt-20 relative">
         <h1 class="huge-text reveal">MODULATING<br><span class="text-zinc-800">IDEAS.</span></h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 mt-12 gap-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 mt-8 md:mt-12 gap-8 md:gap-12">
             <div class="reveal" style="transition-delay: 0.2s;">
-                <p class="text-2xl font-light leading-relaxed text-zinc-400">
-                    B.Tech in Electronics at PDEU. Winner of the MATLAB Innovation Challenge. Building high-fidelity DSP engines and embedded systems.
+                <p class="text-xl md:text-2xl font-light leading-relaxed text-zinc-400 max-w-2xl">
+                    Electronics & Communication Engineer. Bridging the gap between analog reality and digital precision through DSP, embedded architecture, and high-fidelity audio systems.
                 </p>
                 <div class="mt-8 flex gap-6 items-center">
-                    <div class="w-12 h-12 rounded-full border border-zinc-700 flex items-center justify-center icon-box">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-zinc-700 flex items-center justify-center icon-box">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     </div>
-                    <span class="text-xs uppercase tracking-widest opacity-40">Scroll to Explore</span>
+                    <span class="text-[10px] md:text-xs uppercase tracking-widest opacity-40">Scroll to Explore</span>
                 </div>
             </div>
-            <div class="flex flex-col justify-end items-start md:items-end space-y-2 text-sm font-mono opacity-40 reveal" style="transition-delay: 0.4s;">
+            <div class="flex flex-col justify-end items-start md:items-end space-y-2 text-xs md:text-sm font-mono opacity-40 reveal" style="transition-delay: 0.4s;">
                 <p>LAT: 23.2156° N</p>
                 <p>LONG: 72.6369° E</p>
                 <p>Ahmedabad, IN</p>
@@ -63,117 +66,209 @@
         </div>
     </section>
 
-    <section id="work" class="px-8 py-32 border-t border-zinc-900">
-        <h2 class="text-xs uppercase tracking-[0.3em] text-zinc-600 mb-20 reveal">Selected Engineering Work (Click to Expand)</h2>
+    <section id="work" class="px-6 md:px-8 py-24 md:py-32 border-t border-zinc-900">
+        <h2 class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-zinc-600 mb-16 md:mb-20 reveal">Selected Engineering Work (Click to Expand)</h2>
         
         <div class="space-y-0">
-            <div class="project-card reveal p-8 group" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-center h-20">
-                    <span class="text-zinc-600 font-mono">01</span>
-                    <h3 class="text-3xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform">Minimoog Poly-Synth</h3>
-                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform">↗</span>
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-zinc-600 font-mono text-sm md:text-base">01</span>
+                    <h3 class="text-2xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform flex-1 ml-6 md:ml-12">Minimoog Poly-Synth</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform text-xl md:text-2xl">↗</span>
                 </div>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity">
-                    <p class="text-zinc-400 text-lg leading-relaxed">
-                        Developing an 8-voice virtual analog synthesis engine in C++[cite: 18]. Implementing non-linear transistor ladder filters for real-time embedded performance on high-performance microcontrollers[cite: 20].
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-500">
+                    <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        Developing a polyphonic Virtual Analog (VA) synthesis engine. Implementing an 8-voice allocation architecture and emulating non-linear transistor ladder filters for real-time embedded performance.
                     </p>
                     <div class="space-y-4">
-                        <div class="text-xs uppercase text-zinc-500 font-bold tracking-widest">Stack</div>
-                        <p class="font-mono text-accent">C++ / DSP / Embedded Systems / VA Synthesis</p>
-                        <a href="https://github.com/techiitheblob/" class="inline-block mt-4 border border-zinc-700 px-6 py-2 hover:bg-white hover:text-black transition">View Source</a>
+                        <div class="text-[10px] md:text-xs uppercase text-zinc-500 font-bold tracking-widest">Stack</div>
+                        <p class="font-mono text-sm md:text-base text-accent">C++ / DSP / Embedded Systems</p>
+                        <span class="inline-block mt-4 border border-zinc-700 px-4 py-1 text-xs text-zinc-400 uppercase tracking-widest">Ongoing (2026)</span>
                     </div>
                 </div>
             </div>
 
-            <div class="project-card reveal p-8 group" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-center h-20">
-                    <span class="text-zinc-600 font-mono">02</span>
-                    <h3 class="text-3xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform">ΔΣ Modulator</h3>
-                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform">↗</span>
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-zinc-600 font-mono text-sm md:text-base">02</span>
+                    <h3 class="text-2xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform flex-1 ml-6 md:ml-12">ΔΣ Modulator</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform text-xl md:text-2xl">↗</span>
                 </div>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity">
-                    <p class="text-zinc-400 text-lg leading-relaxed">
-                        Modeled a 2nd-order Delta-Sigma modulator in Simulink to analyze noise-shaping for high-fidelity audio[cite: 22]. Focused on the critical trade-off between Over-Sampling Ratio (OSR) and Signal-to-Noise Ratio (SNR)[cite: 23].
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-500">
+                    <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        Modeled a 2nd-order Delta-Sigma modulator to analyze noise-shaping for high-fidelity audio. Validated system architecture and signal flow while analyzing trade-offs between Over-Sampling Ratio (OSR) and Signal-to-Noise Ratio (SNR).
                     </p>
                     <div class="space-y-4">
-                        <div class="text-xs uppercase text-zinc-500 font-bold tracking-widest">Tools</div>
-                        <p class="font-mono">MATLAB / Simulink / Mixed-Signal VLSI</p>
+                        <div class="text-[10px] md:text-xs uppercase text-zinc-500 font-bold tracking-widest">Tools</div>
+                        <p class="font-mono text-sm md:text-base">MATLAB / Simulink</p>
                     </div>
                 </div>
             </div>
 
-            <div class="project-card reveal p-8 group" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-center h-20">
-                    <span class="text-zinc-600 font-mono">03</span>
-                    <h3 class="text-3xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform">Solar Precision Algorithm</h3>
-                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform">↗</span>
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-zinc-600 font-mono text-sm md:text-base">03</span>
+                    <h3 class="text-2xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform flex-1 ml-6 md:ml-12">Solar Position Algorithm</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform text-xl md:text-2xl">↗</span>
                 </div>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity">
-                    <p class="text-zinc-400 text-lg leading-relaxed">
-                        First Place Winner of the MATLAB Innovation Challenge[cite: 24, 41]. Led a team to develop an algorithm that determines precise solar panel positioning based on annual sun path and atmospheric conditions[cite: 26, 27].
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-500">
+                    <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        Led a team to develop an algorithm that determines precise solar panel positioning for maximum output. Integrated complex multi-variable analysis including annual sun path, shadow casting, atmospheric conditions, and panel thermal properties.
                     </p>
                     <div class="space-y-4">
-                        <div class="text-xs uppercase text-zinc-500 font-bold tracking-widest">Award</div>
-                        <p class="font-mono text-green-400">IEEE Hackathon: Code the Future (Winner)</p>
+                        <div class="text-[10px] md:text-xs uppercase text-zinc-500 font-bold tracking-widest">Award</div>
+                        <p class="font-mono text-sm md:text-base text-green-400">1st Place - MATLAB Innovation Challenge (2025)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-zinc-600 font-mono text-sm md:text-base">04</span>
+                    <h3 class="text-2xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform flex-1 ml-6 md:ml-12">Beam Steering Tool</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform text-xl md:text-2xl">↗</span>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-500">
+                    <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        Designed a simulation tool to visualize and optimize beamforming for antenna arrays. Implemented algorithms for phase shifting and array factor calculation, techniques highly relevant for advanced spatial audio applications.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="text-[10px] md:text-xs uppercase text-zinc-500 font-bold tracking-widest">Stack</div>
+                        <p class="font-mono text-sm md:text-base">MATLAB / DSP</p>
+                        <span class="inline-block mt-4 border border-zinc-700 px-4 py-1 text-xs text-zinc-400 uppercase tracking-widest">2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-zinc-600 font-mono text-sm md:text-base">05</span>
+                    <h3 class="text-2xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform flex-1 ml-6 md:ml-12">Campus Navigation Tool</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform text-xl md:text-2xl">↗</span>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-500">
+                    <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        Mapped all university buildings using QGIS and deployed a web app accessible via stationed QR codes. Implemented an autocomplete search feature for instant location tracking of academic and administrative facilities.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="text-[10px] md:text-xs uppercase text-zinc-500 font-bold tracking-widest">Stack</div>
+                        <p class="font-mono text-sm md:text-base">QGIS / Web Architecture</p>
+                        <span class="inline-block mt-4 border border-zinc-700 px-4 py-1 text-xs text-zinc-400 uppercase tracking-widest">2023</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-zinc-600 font-mono text-sm md:text-base">06</span>
+                    <h3 class="text-2xl md:text-5xl font-bold group-hover:translate-x-4 transition-transform flex-1 ml-6 md:ml-12">TA Robot Subsystem</h3>
+                    <span class="text-zinc-600 group-hover:rotate-45 transition-transform text-xl md:text-2xl">↗</span>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-500">
+                    <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="text-[10px] md:text-xs uppercase text-zinc-500 font-bold tracking-widest">Hardware</div>
+                        <p class="font-mono text-sm md:text-base">Asus Tinker Board / Arduino / Sensors</p>
+                        <span class="inline-block mt-4 border border-zinc-700 px-4 py-1 text-xs text-zinc-400 uppercase tracking-widest">2019</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="px-8 py-32 bg-zinc-950">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-20">
-            <div class="reveal">
-                <h4 class="text-5xl font-bold mb-8">Specs.</h4>
-                <p class="text-zinc-500 leading-relaxed font-light">
-                    My work sits at the intersection of analog warmth and digital precision[cite: 10, 15]. I focus on how signals move through silicon to create authentic experiences[cite: 10, 11].
+    <section id="specs" class="px-6 md:px-8 py-24 md:py-32 bg-zinc-950">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-20">
+            <div class="lg:col-span-4 reveal">
+                <h4 class="text-4xl md:text-5xl font-bold mb-8">Specs.</h4>
+                <p class="text-zinc-500 leading-relaxed font-light mb-8">
+                    My foundation lies in Mixed-Signal Design and DSP. I focus on optimizing hardware architectures to create robust, scalable, and physically accurate electronic systems.
                 </p>
-            </div>
-            <div class="space-y-12 reveal" style="transition-delay: 0.2s;">
-                <div>
-                    <span class="data-label text-zinc-600 block mb-4 uppercase text-[10px] tracking-widest">Programming</span>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 border border-zinc-800 text-sm">C/C++ (AVR)</span>
-                        <span class="px-3 py-1 border border-zinc-800 text-sm">Python (NumPy)</span>
-                        <span class="px-3 py-1 border border-zinc-800 text-sm">Assembly (8086)</span>
-                    </div>
-                </div>
-                <div>
-                    <span class="data-label text-zinc-600 block mb-4 uppercase text-[10px] tracking-widest">Simulation</span>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 border border-zinc-800 text-sm">MATLAB</span>
-                        <span class="px-3 py-1 border border-zinc-800 text-sm">LTspice</span>
-                        <span class="px-3 py-1 border border-zinc-800 text-sm">Simulink</span>
-                    </div>
+                <div class="border-t border-zinc-900 pt-8">
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-4 text-zinc-400">Pandit Deendayal Energy University</h5>
+                    <p class="text-sm text-zinc-300">B.Tech, Electronics & Communication</p>
+                    <p class="text-sm font-mono text-accent mt-2">CGPA: 8.62/10.0</p>
+                    <p class="text-xs text-zinc-600 mt-1 uppercase tracking-widest">Class of 2027</p>
                 </div>
             </div>
-            <div class="space-y-12 reveal" style="transition-delay: 0.4s;">
-                <div class="border-l border-zinc-800 pl-8">
-                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4">Summer Intern '24</h5>
+
+            <div class="lg:col-span-4 space-y-12 reveal" style="transition-delay: 0.2s;">
+                <div>
+                    <span class="block mb-4 uppercase text-[10px] tracking-widest text-zinc-600 border-b border-zinc-900 pb-2">Simulation & Design</span>
+                    <p class="font-mono text-sm text-zinc-300 leading-relaxed">MATLAB, Simulink, LTspice, Tina-TI, Logisim, Proteus, QGIS, Data Visualization</p>
+                </div>
+                <div>
+                    <span class="block mb-4 uppercase text-[10px] tracking-widest text-zinc-600 border-b border-zinc-900 pb-2">Hardware & Logic</span>
+                    <p class="font-mono text-sm text-zinc-300 leading-relaxed">Raspberry Pi, Asus Tinker Board, AVR Microcontrollers (ATmega2560), 8086, Advanced Sensors</p>
+                </div>
+                <div>
+                    <span class="block mb-4 uppercase text-[10px] tracking-widest text-zinc-600 border-b border-zinc-900 pb-2">Programming</span>
+                    <p class="font-mono text-sm text-zinc-300 leading-relaxed">C/C++ (AVR/ATmega), Python (NumPy, Matplotlib), Assembly (8086)</p>
+                </div>
+                <div>
+                    <span class="block mb-4 uppercase text-[10px] tracking-widest text-zinc-600 border-b border-zinc-900 pb-2">Relevant Coursework</span>
+                    <div class="flex flex-wrap gap-2 text-xs font-mono text-zinc-400">
+                        <span class="bg-zinc-900 px-2 py-1">Digital Signal Processing</span>
+                        <span class="bg-zinc-900 px-2 py-1">Mixed Signal VLSI</span>
+                        <span class="bg-zinc-900 px-2 py-1">Embedded Systems</span>
+                        <span class="bg-zinc-900 px-2 py-1">Analog Communications</span>
+                        <span class="bg-zinc-900 px-2 py-1">Microprocessors</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 space-y-12 reveal" style="transition-delay: 0.4s;">
+                <div class="border-l border-zinc-800 pl-6">
+                    <span class="text-[10px] text-zinc-600 font-mono">JUNE 2024</span>
+                    <h5 class="text-sm font-bold uppercase tracking-widest mt-1 mb-2 text-zinc-200">Jivdaya Charitable Trust</h5>
                     <p class="text-zinc-500 text-sm leading-relaxed">
-                        Jivdaya Charitable Trust: Wildlife rehabilitation logistics and raptor research data processing[cite: 46, 49].
+                        Summer Intern (Animal Welfare). Processed clinical and behavioral data for a raptor research project. Managed operational logistics and veterinary support in a high-pressure field environment.
                     </p>
                 </div>
-                <div class="border-l border-zinc-800 pl-8">
-                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4">Leadership</h5>
-                    <p class="text-zinc-500 text-sm leading-relaxed">
-                        Campus Organizer for GBBC [cite: 53], Committee member at Sorriso Photo Club [cite: 58], and Technical Committee at Brahmand[cite: 59].
-                    </p>
+
+                <div class="border-l border-zinc-800 pl-6">
+                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4 text-zinc-200">Leadership & Community</h5>
+                    <ul class="space-y-4 text-sm text-zinc-400">
+                        <li><strong class="text-zinc-300">GBBC Campus Organizer:</strong> Managed volunteers and compiled data for the Great Backyard Bird Count.</li>
+                        <li><strong class="text-zinc-300">Field Researcher:</strong> Active in bird counts across Ahmedabad, Dholera, and Nalsarovar.</li>
+                        <li><strong class="text-zinc-300">NSS Volunteer:</strong> Active participant in community service initiatives (2023-2024).</li>
+                    </ul>
+                </div>
+
+                <div class="border-l border-zinc-800 pl-6">
+                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4 text-zinc-200">Extracurriculars</h5>
+                    <ul class="space-y-4 text-sm text-zinc-400">
+                        <li><strong class="text-zinc-300">Brahmand (Space Club):</strong> Built a dual-axis sun tracker; programmed sensor and servo control logic.</li>
+                        <li><strong class="text-zinc-300">Sorriso (Photography):</strong> Committee Member managing visual archives and event documentation.</li>
+                        <li><strong class="text-zinc-300">VGA (Cinema Club):</strong> Managed visual coverage for cultural events.</li>
+                    </ul>
+                </div>
+                
+                <div class="border-l border-zinc-800 pl-6">
+                    <h5 class="text-sm font-bold uppercase tracking-widest mb-4 text-zinc-200">Honors</h5>
+                    <ul class="space-y-2 text-sm text-zinc-400">
+                        <li><span class="text-accent font-bold">Winner</span> - MATLAB Innovation Challenge (2025)</li>
+                        <li><span class="text-zinc-300 font-bold">Semi-Finalist</span> - Tata Club Energy National Quiz (2020)</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="p-20 text-center border-t border-zinc-900">
-        <h2 class="text-6xl md:text-8xl font-black mb-12 reveal">LETS WORK.</h2>
-        <div class="flex flex-col md:flex-row justify-center items-center gap-8 font-mono text-xs opacity-50 uppercase tracking-widest">
-            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-white transition">Email</a>
-            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-white transition">LinkedIn</a>
-            <a href="https://github.com/techiitheblob/" class="hover:text-white transition">GitHub</a>
-            <a href="https://kahaanjpeg.mypixieset.com/" class="hover:text-white transition text-accent">Photography Portfolio</a>
+    <footer class="p-12 md:p-20 text-center border-t border-zinc-900 relative overflow-hidden">
+        <h2 class="text-5xl md:text-8xl font-black mb-12 md:mb-16 reveal relative z-10">LETS WORK.</h2>
+        
+        <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 font-mono text-xs opacity-60 uppercase tracking-widest relative z-10">
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-white transition pb-1 border-b border-transparent hover:border-white">Email</a>
+            <a href="tel:+918320137190" class="hover:text-white transition pb-1 border-b border-transparent hover:border-white">+91 8320137190</a>
+            <a href="https://www.linkedin.com/in/kahaan-padiya/" target="_blank" class="hover:text-white transition pb-1 border-b border-transparent hover:border-white">LinkedIn</a>
+            <a href="https://github.com/techiitheblob/" target="_blank" class="hover:text-white transition pb-1 border-b border-transparent hover:border-white">GitHub</a>
+            <a href="https://kahaanjpeg.mypixieset.com/" target="_blank" class="hover:text-accent transition pb-1 border-b border-transparent hover:border-accent text-accent">Photography</a>
         </div>
-        <div class="mt-20 text-[10px] opacity-20 uppercase tracking-widest">
-            Kahaan Padiya © 2026 // Class of 2027 // Roll: 23BEC009
+        
+        <div class="mt-24 md:mt-32 text-[10px] opacity-30 uppercase tracking-widest font-mono">
+            Kahaan Padiya © 2026 // B.Tech ECE // Roll: 23BEC009
         </div>
     </footer>
 
@@ -185,7 +280,7 @@
                     entry.target.classList.add('active');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
@@ -193,9 +288,15 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
     </script>
