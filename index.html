@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahaan Padiya — Embedded Architecture</title>
+    <title>Kahaan Padiya — Embedded Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -28,42 +28,48 @@
             background-size: 40px 40px;
         }
         
-        /* New Fade In (Replaces old blur reveal for containers) */
-        .fade-in { 
+        /* Clean Blur Reveal */
+        .reveal { 
             opacity: 0; 
+            filter: blur(12px); 
             transform: translateY(20px); 
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); 
         }
-        .fade-in.active { opacity: 1; transform: translateY(0px); }
+        .reveal.active { 
+            opacity: 1; 
+            filter: blur(0px); 
+            transform: translateY(0px); 
+        }
 
-        /* Staggered Abstract Project Cards */
+        /* Clean Structured Project Cards */
         .project-card { 
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
-            cursor: pointer; height: 120px; overflow: hidden; 
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
+            cursor: pointer; height: 140px; overflow: hidden; 
+            border-bottom: 1px solid var(--border); 
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
         }
         .project-card.expanded { 
             height: auto; min-height: 350px; 
-            background: var(--panel); border-color: var(--accent) !important; 
-            padding-bottom: 3rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            z-index: 50; position: relative;
+            background: var(--panel); border-color: var(--accent); 
+            padding-bottom: 3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 10; position: relative;
         }
-        @media (min-width: 768px) { .project-card { height: 140px; } }
+        @media (min-width: 768px) { .project-card { height: 160px; } }
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
         
-        .huge-text { font-size: clamp(3rem, 12vw, 10rem); font-weight: 800; line-height: 0.85; letter-spacing: -0.05em; }
+        .huge-text { font-size: clamp(3rem, 12vw, 10rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
         .pcb-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; width: 100vw; height: 100vh; opacity: 0.6; }
         .trace { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 3000; stroke-dashoffset: 3000; transition: stroke-dashoffset 0.1s linear; }
 
-        .telemetry-widget { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .telemetry-widget { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); border-radius: 6px; }
 
-        .ic-package { background: #111827; border: 2px solid #374151; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 20px 40px rgba(0,0,0,0.6); position: relative; }
+        .ic-package { background: #111827; border: 2px solid #374151; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         .ic-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 16px; background: var(--bg); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 2px solid #374151; }
         
         .pin-line-left, .pin-line-right { height: 2px; background: #475569; transition: all 0.3s; }
@@ -72,7 +78,8 @@
         
         .pin-head { width: 16px; height: 10px; background: #9ca3af; transition: all 0.3s; }
         
-        .crosshair { position: absolute; color: var(--border); font-family: monospace; font-size: 10px; user-select: none; }
+        .timeline-dot { transition: all 0.3s; }
+        .timeline-item:hover .timeline-dot { background-color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
     </style>
 </head>
 <body class="selection:bg-[#06b6d4] selection:text-white">
@@ -83,23 +90,19 @@
         <path class="trace trace-scroll" d="M 0 500 L 100 500 L 150 450 L 500 450 L 550 500 L 1100 500" opacity="0.5"/>
     </svg>
 
-    <div class="crosshair top-32 left-10 hidden md:block">[ + ]</div>
-    <div class="crosshair bottom-32 right-10 hidden md:block">[ + ]</div>
-    <div class="crosshair top-1/2 left-1/2 hidden md:block opacity-30">[ + ]</div>
-
-    <div class="fixed bottom-6 right-6 p-4 border border-slate-700 telemetry-widget font-mono text-[10px] md:text-xs text-slate-400 z-50 pointer-events-none hidden sm:block">
+    <div class="fixed bottom-6 right-6 p-4 border border-slate-700 telemetry-widget font-mono text-xs text-slate-400 z-50 pointer-events-none hidden md:block">
         <div class="text-cyan-400 font-bold border-b border-slate-700 pb-2 mb-3 tracking-widest">SYS_TELEMETRY</div>
-        <div class="flex justify-between w-32 md:w-40 mb-1"><span>POS_X:</span> <span id="tel-x" class="text-slate-200">0000</span></div>
-        <div class="flex justify-between w-32 md:w-40 mb-1"><span>POS_Y:</span> <span id="tel-y" class="text-slate-200">0000</span></div>
-        <div class="flex justify-between w-32 md:w-40 mb-2"><span>SCROLL:</span> <span id="tel-scroll" class="text-slate-200">00%</span></div>
+        <div class="flex justify-between w-40 mb-1"><span>POS_X:</span> <span id="tel-x" class="text-slate-200">0000</span></div>
+        <div class="flex justify-between w-40 mb-1"><span>POS_Y:</span> <span id="tel-y" class="text-slate-200">0000</span></div>
+        <div class="flex justify-between w-40 mb-2"><span>SCROLL:</span> <span id="tel-scroll" class="text-slate-200">00%</span></div>
         <div class="w-full h-1 bg-slate-800 rounded overflow-hidden">
             <div id="tel-bar" class="h-full bg-cyan-400 transition-all duration-75" style="width: 0%"></div>
         </div>
     </div>
 
-    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 bg-slate-900/60 backdrop-blur-md border-b border-slate-800/50">
-        <span class="font-bold tracking-tighter text-xl text-cyan-400 cipher-trigger" data-cipher="Kahaan.Padiya">Kahaan.Padiya</span>
-        <div class="space-x-4 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-slate-400">
+    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <span class="font-bold tracking-tighter text-xl text-cyan-400">Kahaan.Padiya</span>
+        <div class="space-x-3 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-slate-400">
             <a href="#work" class="hover:text-cyan-400 transition">Projects</a>
             <a href="#skills" class="hover:text-cyan-400 transition">Skills</a>
             <a href="#experience" class="hover:text-cyan-400 transition hidden sm:inline">Experience</a>
@@ -107,308 +110,344 @@
         </div>
     </nav>
 
-    <section class="min-h-screen relative pt-32 pb-20 flex flex-col justify-center overflow-hidden">
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 pb-20 relative">
+        <div class="inline-block px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs font-mono font-bold mb-6 border border-cyan-500/30 rounded w-max reveal">PORTFOLIO // B.TECH ECE</div>
+        <h1 class="huge-text reveal text-slate-100 drop-shadow-lg">EMBEDDED<br><span class="text-slate-600">SYSTEMS.</span></h1>
         
-        <div class="flex flex-col gap-4 mt-12 w-full max-w-7xl mx-auto relative px-6 md:px-12">
-            <div class="inline-block px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs font-mono font-bold mb-6 border border-cyan-500/30 rounded w-max fade-in absolute -top-16 left-6 md:left-24">PORTFOLIO // EMBEDDED_SYS</div>
-            
-            <div class="text-right md:mr-32 fade-in">
-                <h1 class="huge-text text-slate-100 drop-shadow-lg cipher-trigger" data-cipher="SHAPING">SHAPING</h1>
-            </div>
-            <div class="text-left md:ml-12 fade-in">
-                <h1 class="huge-text text-slate-700 drop-shadow-lg cipher-trigger" data-cipher="SILICON.">SILICON.</h1>
-            </div>
-        </div>
-        
-        <div class="mt-24 grid grid-cols-1 md:grid-cols-12 gap-8 px-6 md:px-12 w-full max-w-7xl mx-auto">
-            <div class="md:col-start-2 md:col-span-5 border-l-2 border-cyan-500 pl-6 fade-in">
-                <p class="text-sm md:text-base font-light leading-relaxed text-slate-400">
+        <div class="mt-8 md:mt-12">
+            <div class="reveal" style="transition-delay: 0.1s;">
+                <p class="text-lg md:text-xl font-light leading-relaxed text-slate-400 max-w-2xl">
                     Electronics & Communication Engineer at PDEU. Bridging the gap between analog reality and digital precision through DSP, embedded architecture, CAD modeling, and high-fidelity audio systems.
                 </p>
-            </div>
-            
-            <div class="md:col-start-9 md:col-span-4 border-t border-slate-700 pt-6 flex flex-col gap-3 text-xs md:text-sm font-mono text-slate-500 fade-in mt-12 md:mt-0">
-                <p class="flex items-center gap-2 text-slate-300">
-                    <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span> 
-                    <span class="cipher-trigger" data-cipher="OPEN TO OPPORTUNITIES">OPEN TO OPPORTUNITIES</span>
-                </p>
-                <p class="cipher-trigger" data-cipher="LOC: Ahmedabad, IN">LOC: Ahmedabad, IN</p>
-                <p class="cipher-trigger" data-cipher="DEG: B.Tech ECE '27">DEG: B.Tech ECE '27</p>
+                
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-10 text-xs md:text-sm font-mono text-slate-500">
+                    <p class="flex items-center gap-2 text-slate-300">
+                        <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span> 
+                        OPEN TO OPPORTUNITIES
+                    </p>
+                    <p class="hidden sm:block text-slate-700">|</p>
+                    <p>LOC: Ahmedabad, IN</p>
+                    <p class="hidden sm:block text-slate-700">|</p>
+                    <p>CLASS OF 2027</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="work" class="px-6 md:px-12 py-24 md:py-32 relative">
-        <div class="absolute top-0 left-12 w-px h-32 bg-cyan-500/50 hidden md:block"></div>
-        
-        <div class="mb-24 fade-in">
-            <h2 class="text-lg md:text-2xl uppercase tracking-[0.2em] text-slate-200 font-bold flex items-center gap-3 cipher-trigger" data-cipher="PROJECT_MODULES">
-                PROJECT_MODULES
+    <section id="work" class="px-6 md:px-12 py-24 md:py-32 border-t border-slate-800">
+        <div class="flex items-center gap-4 mb-16 md:mb-20 reveal">
+            <div class="h-[1px] bg-slate-700 flex-1"></div>
+            <h2 class="text-lg md:text-xl uppercase tracking-[0.2em] text-slate-200 font-bold flex items-center gap-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                Projects <span class="text-cyan-400 font-normal font-mono text-[10px] md:text-xs ml-2 hidden md:inline">// Project Repository (Click rows to expand)</span>
             </h2>
-            <p class="font-mono text-xs text-cyan-400 mt-2">// Expand nodes for schematic breakdown.</p>
+            <div class="h-[1px] bg-slate-700 flex-1"></div>
         </div>
         
-        <div class="space-y-8 md:space-y-0 relative">
-            <div class="absolute left-1/2 top-0 bottom-0 w-px bg-slate-800 hidden md:block -z-10"></div>
-
-            <div class="project-card fade-in p-6 md:p-8 group w-full md:w-[70%] border-l-4 border-l-cyan-500 border border-slate-700 rounded md:mr-auto" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-start">
-                    <div class="flex gap-4 md:gap-8 items-center">
-                        <span class="text-slate-600 font-mono text-2xl md:text-4xl font-light">01</span>
-                        <h3 class="text-xl md:text-3xl font-bold group-hover:text-cyan-400 transition-colors cipher-trigger" data-cipher="Minimoog Poly-Synth">Minimoog Poly-Synth</h3>
-                    </div>
-                    <div class="text-slate-500 font-mono text-xs hidden md:block mt-2">C++ / DSP</div>
+        <div class="space-y-0 border-t border-slate-800">
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-slate-500 font-mono text-sm">01</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">Minimoog Poly-Synth</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 group-hover:border-cyan-400 transition-all font-mono text-xs">+</div>
                 </div>
-                <div class="mt-8 md:mt-12 grid grid-cols-1 gap-8 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100 pl-0 md:pl-16">
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed border-l border-slate-600 pl-4">
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
+                    <p class="text-slate-300 text-base leading-relaxed">
                         Developing a polyphonic Virtual Analog (VA) synthesis engine. Implementing an 8-voice allocation architecture and emulating non-linear transistor ladder filters for real-time embedded performance.
                     </p>
-                    <span class="inline-block border border-cyan-900 bg-cyan-950/30 px-3 py-1 text-xs text-cyan-300 rounded w-max font-mono">STATUS: ONGOING (2026)</span>
+                    <div class="space-y-4 font-mono">
+                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Technical Stack</div>
+                        <p class="text-sm text-cyan-400">C++ | Digital Signal Processing | MCU</p>
+                        <span class="inline-block mt-4 border border-cyan-900 bg-cyan-950/30 px-3 py-1 text-xs text-cyan-300 rounded">Status: Ongoing (2026)</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="project-card fade-in p-6 md:p-8 group w-full md:w-[75%] border-r-4 border-r-amber-500 border border-slate-700 rounded md:ml-auto md:-mt-10" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-start flex-row-reverse">
-                    <div class="flex gap-4 md:gap-8 items-center flex-row-reverse">
-                        <span class="text-slate-600 font-mono text-2xl md:text-4xl font-light">02</span>
-                        <h3 class="text-xl md:text-3xl font-bold group-hover:text-amber-400 transition-colors text-right cipher-trigger" data-cipher="ΔΣ Modulator Sim">ΔΣ Modulator Sim</h3>
-                    </div>
-                    <div class="text-slate-500 font-mono text-xs hidden md:block mt-2">MATLAB</div>
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-slate-500 font-mono text-sm">02</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">ΔΣ Modulator Sim</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
                 </div>
-                <div class="mt-8 md:mt-12 grid grid-cols-1 gap-8 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100 pr-0 md:pr-16 text-right">
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed border-r border-slate-600 pr-4">
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
+                    <p class="text-slate-300 text-base leading-relaxed">
                         Modeled a 2nd-order Delta-Sigma modulator to analyze noise-shaping for high-fidelity audio. Validated system architecture and signal flow while analyzing trade-offs between OSR and SNR.
                     </p>
-                    <span class="inline-block border border-amber-900 bg-amber-950/30 px-3 py-1 text-xs text-amber-300 rounded w-max font-mono ml-auto">VLSI DESIGN</span>
-                </div>
-            </div>
-
-            <div class="project-card fade-in p-6 md:p-8 group w-full md:w-[80%] border-b-4 border-b-cyan-500 border border-slate-700 rounded md:mx-auto md:mt-12" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-center h-16">
-                    <span class="text-slate-600 font-mono text-xl md:text-2xl font-light">03</span>
-                    <h3 class="text-xl md:text-3xl font-bold group-hover:text-cyan-400 transition-colors text-center cipher-trigger" data-cipher="Solar Tracker Alg.">Solar Tracker Alg.</h3>
-                    <span class="text-amber-400 font-mono text-xs border border-amber-500/50 px-2 py-1 rounded hidden md:block">WINNER</span>
-                </div>
-                <div class="mt-8 md:mt-12 grid grid-cols-1 gap-8 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100 text-center">
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-                        Led a team to develop an algorithm that determines precise solar panel positioning for maximum output. Integrated complex multi-variable analysis including sun path, shadow casting, and thermal properties.
-                    </p>
-                    <span class="inline-block border border-cyan-900 bg-cyan-950/30 px-3 py-1 text-xs text-cyan-300 rounded w-max font-mono mx-auto">MATLAB INNOVATION CHALLENGE</span>
-                </div>
-            </div>
-
-            <div class="project-card fade-in p-6 md:p-8 group w-full md:w-[65%] border-l-4 border-l-slate-400 border border-slate-700 rounded md:mr-auto md:-mt-8" onclick="this.classList.toggle('expanded')">
-                <div class="flex justify-between items-start">
-                    <div class="flex gap-4 items-center">
-                        <span class="text-slate-600 font-mono text-xl font-light">04</span>
-                        <h3 class="text-lg md:text-2xl font-bold group-hover:text-slate-300 transition-colors cipher-trigger" data-cipher="TA Robot Subsystem">TA Robot Subsystem</h3>
+                    <div class="space-y-4 font-mono">
+                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Environment</div>
+                        <p class="text-sm text-cyan-400">MATLAB | Simulink | Mixed-Signal VLSI</p>
                     </div>
                 </div>
-                <div class="mt-8 grid grid-cols-1 gap-6 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
-                    <p class="text-slate-400 text-sm leading-relaxed border-l border-slate-600 pl-4">
-                        Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control.
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-slate-500 font-mono text-sm">03</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">Solar Tracker Alg.</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        Led a team to develop an algorithm that determines precise solar panel positioning for maximum output. Integrated complex multi-variable analysis including sun path, shadow casting, and thermal properties.
                     </p>
-                    <span class="inline-block border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-300 rounded w-max font-mono">HARDWARE & CAD</span>
+                    <div class="space-y-4 font-mono">
+                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Achievement</div>
+                        <p class="text-sm text-amber-400">🏆 1st Place - MATLAB Innovation Challenge</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-slate-500 font-mono text-sm">04</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">TA Robot Logic</h3>
+                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control. Designed enclosures and mounts.
+                    </p>
+                    <div class="space-y-4 font-mono">
+                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Hardware & Design</div>
+                        <p class="text-sm text-cyan-400">Asus Tinker Board | Arduino | SolidWorks</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="skills" class="px-6 md:px-12 py-24 md:py-32 border-t border-slate-800 bg-slate-900/40">
-        
-        <div class="mb-16 fade-in">
-            <h2 class="text-lg md:text-2xl uppercase tracking-[0.2em] text-slate-200 font-bold flex items-center gap-3 cipher-trigger" data-cipher="HARDWARE_SPECS">
-                HARDWARE_SPECS
-            </h2>
-            <p class="font-mono text-xs text-cyan-400 mt-2">// Systems initialization & technical data sheet.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative mt-10">
+    <section id="skills" class="px-6 md:px-12 py-24 md:py-32 bg-slate-900/80 border-t border-slate-800 backdrop-blur-md">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-20">
             
-            <div class="lg:col-span-6 lg:col-start-1 lg:row-start-1 z-20 fade-in" id="terminal-trigger">
-                <div class="bg-[#0f111a] border border-slate-600 rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.7)] backdrop-blur-xl">
-                    <div class="bg-slate-800/80 px-4 py-2 flex items-center gap-3 border-b border-slate-600">
+            <div class="lg:col-span-5 reveal" id="terminal-trigger">
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                    Technical Skills
+                </h4>
+                <p class="text-slate-400 text-sm mb-8 font-mono text-[11px]">// System initialization & software proficiencies loading...</p>
+                
+                <div class="bg-[#0f111a] border border-slate-600 rounded-lg overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                    <div class="bg-slate-800 px-4 py-2 flex items-center gap-3 border-b border-slate-600">
                         <div class="flex gap-2">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
                             <div class="w-3 h-3 rounded-full bg-amber-500"></div>
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
-                        <span class="text-[10px] text-slate-400 font-mono tracking-wider ml-4 hidden sm:block">kahaan-sys ~ ./load_skills.sh</span>
+                        <span class="text-xs text-slate-400 font-mono tracking-wider ml-4">user@kahaan-sys: ~</span>
                         <div class="ml-auto flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                             <span class="text-[10px] text-green-400 font-mono uppercase font-bold tracking-widest">Live Log</span>
                         </div>
                     </div>
-                    <div class="p-6 h-[380px] overflow-y-auto font-mono text-xs md:text-sm text-slate-300 leading-relaxed relative" id="term-container">
-                        <div id="terminal-output" class="space-y-1.5"></div>
-                        <span id="terminal-cursor" class="text-cyan-400 animate-pulse hidden block mt-2">█</span>
+                    <div class="p-5 h-[350px] overflow-y-auto font-mono text-xs md:text-sm text-slate-300 leading-relaxed relative" id="term-container">
+                        <div id="terminal-output" class="space-y-1"></div>
+                        <span id="terminal-cursor" class="text-cyan-400 animate-pulse hidden block mt-1">█</span>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-8 lg:col-start-5 lg:row-start-1 lg:mt-32 z-10 fade-in" style="transition-delay: 0.2s;">
-                <div class="bg-slate-900/90 border border-slate-700 p-8 md:p-12 rounded-xl shadow-2xl relative overflow-hidden backdrop-blur-sm">
-                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, #06b6d4 1px, transparent 0); background-size: 20px 20px;"></div>
+            <div class="lg:col-span-7 reveal" style="transition-delay: 0.2s;">
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M22 16h-4"/><path d="M6 16H2"/><path d="M18 20v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg>
+                    Skills Map
+                </h4>
+                <p class="text-slate-400 text-sm mb-6 font-mono text-[11px]">// Interactive Data Sheet: Hover over the pins to inspect my technical domains.</p>
+                
+                <div class="inline-block bg-cyan-900/40 text-cyan-400 border border-cyan-500/50 px-4 py-2 rounded text-[10px] md:text-xs font-bold tracking-widest animate-pulse mb-8 shadow-lg">
+                    SCANNING... HOVER OVER PINS TO INSPECT DOMAINS
+                </div>
+
+                <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 font-mono text-[9px] md:text-[11px] lg:text-xs mt-2 w-full">
                     
-                    <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 font-mono text-[9px] md:text-[11px] lg:text-xs">
-                        
-                        <div class="flex flex-col gap-8 md:gap-10 items-end w-full">
-                            <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Mixed-Signal Design', 'Delta-Sigma Modulators, VLSI Design, Analog Circuits')">
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right cipher-trigger" data-cipher="PIN_01 [ADC]: Mixed-Signal">PIN_01 [ADC]: Mixed-Signal</span>
-                                <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                                <div class="pin-head rounded-l-sm shrink-0"></div>
-                            </div>
-                            <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Digital Signal Processing', 'Audio Engineering, Noise Shaping, Active Filtering')">
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right cipher-trigger" data-cipher="PIN_02 [DSP]: Signal Proc.">PIN_02 [DSP]: Signal Proc.</span>
-                                <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                                <div class="pin-head rounded-l-sm shrink-0"></div>
-                            </div>
-                            <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Embedded C/C++ & Assembly', 'AVR/ATmega Architecture, Assembly (8086), Python')">
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_03 [TXD]: C_CPP & ASM</span>
-                                <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                                <div class="pin-head rounded-l-sm shrink-0"></div>
-                            </div>
-                            <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('MATLAB & Simulation Environments', 'Simulink, Proteus, LTspice, System Modeling')">
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_04 [SIM]: MATLAB_SYS</span>
-                                <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                                <div class="pin-head rounded-l-sm shrink-0"></div>
-                            </div>
-                            <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('3D Modeling & Enclosures', 'AutoCAD, SolidWorks, SketchUp Hardware Design')">
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_05 [CAD]: 3D Modeling</span>
-                                <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                                <div class="pin-head rounded-l-sm shrink-0"></div>
-                            </div>
+                    <div class="flex flex-col gap-6 md:gap-8 items-end z-10 w-full">
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Mixed-Signal Design', 'Delta-Sigma Modulators, VLSI Design, Analog Circuits')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_01 [ADC]: Mixed-Signal</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
-                        
-                        <div class="w-24 h-[350px] md:w-32 md:h-[420px] ic-package rounded-sm flex items-center justify-center shrink-0">
-                            <div class="ic-notch"></div>
-                            <div class="absolute top-4 left-3 md:left-4 w-2 h-2 md:w-3 md:h-3 rounded-full bg-slate-700 shadow-inner border border-slate-800"></div>
-                            <span class="rotate-90 text-slate-500 font-bold tracking-widest text-lg md:text-2xl opacity-40 drop-shadow-md whitespace-nowrap">KP-2027</span>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Digital Signal Processing', 'Audio Engineering, Noise Shaping, Active Filtering')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_02 [DSP]: Signal Proc.</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
-
-                        <div class="flex flex-col gap-8 md:gap-10 items-start w-full">
-                            <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Power Systems & Optimization', 'Solar Algorithms, Panel Thermal Properties, Efficiency')">
-                                <div class="pin-head rounded-r-sm shrink-0"></div>
-                                <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left cipher-trigger" data-cipher="Power Sys. [VCC]: PIN_10">Power Sys. [VCC]: PIN_10</span>
-                            </div>
-                            <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Robotics & Motor Control', 'Servo Logic, Arduino Framework, Dual-Axis Tracking')">
-                                <div class="pin-head rounded-r-sm shrink-0"></div>
-                                <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left cipher-trigger" data-cipher="Motor Control [PWM]: PIN_09">Motor Control [PWM]: PIN_09</span>
-                            </div>
-                            <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Audio Synthesis & Generation', 'Transistor Ladder Filters, Virtual Analog Engines')">
-                                <div class="pin-head rounded-r-sm shrink-0"></div>
-                                <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Audio Synth [I2S]: PIN_08</span>
-                            </div>
-                            <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Sensor Integration & Comm', 'IMU, Asus Tinker Board, Raspberry Pi, I2C/SPI Bus')">
-                                <div class="pin-head rounded-r-sm shrink-0"></div>
-                                <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Sensors [I2C_SPI]: PIN_07</span>
-                            </div>
-                            <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('System Prototyping & Layout', 'Hardware Integration, Component Layout, Debugging')">
-                                <div class="pin-head rounded-r-sm shrink-0"></div>
-                                <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                                <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Prototyping [GND]: PIN_06</span>
-                            </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Embedded C/C++ & Assembly', 'AVR/ATmega Architecture, Assembly (8086), Python')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_03 [TXD]: C_CPP & ASM</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('MATLAB & Simulation Environments', 'Simulink, Proteus, LTspice, System Modeling')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_04 [SIM]: MATLAB_SYS</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('3D Modeling & Enclosures', 'AutoCAD, SolidWorks, SketchUp Hardware Design')">
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_05 [CAD]: 3D Modeling</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
                     </div>
+                    
+                    <div class="w-20 h-[300px] md:w-28 md:h-[350px] lg:w-32 ic-package rounded-sm flex items-center justify-center shrink-0">
+                        <div class="ic-notch"></div>
+                        <div class="absolute top-4 left-3 md:left-4 w-2 h-2 md:w-3 md:h-3 rounded-full bg-slate-700 shadow-inner border border-slate-800"></div>
+                        <span class="rotate-90 text-slate-500 font-bold tracking-widest text-lg md:text-xl lg:text-2xl opacity-50 drop-shadow-md whitespace-nowrap">KP-2027</span>
+                    </div>
 
-                    <div class="mt-12 bg-slate-950/80 border border-slate-700 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-lg relative overflow-hidden backdrop-blur-md z-10">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
-                        <div id="pin-title" class="text-cyan-400 font-bold font-mono text-sm md:text-base mb-2 uppercase tracking-widest cipher-trigger" data-cipher=">> WAITING FOR INTERRUPT <<">>> WAITING FOR INTERRUPT <<</div>
-                        <div id="pin-desc" class="text-slate-400 text-xs md:text-sm font-medium">Select a pin above to read the module specification.</div>
+                    <div class="flex flex-col gap-6 md:gap-8 items-start z-10 w-full">
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Power Systems & Optimization', 'Solar Algorithms, Panel Thermal Properties, Efficiency')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Power Sys. [VCC]: PIN_10</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Robotics & Motor Control', 'Servo Logic, Arduino Framework, Dual-Axis Tracking')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Motor Control [PWM]: PIN_09</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Audio Synthesis & Generation', 'Transistor Ladder Filters, Virtual Analog Engines')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Audio Synth [I2S]: PIN_08</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Sensor Integration & Comm', 'IMU, Asus Tinker Board, Raspberry Pi, I2C/SPI Bus')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Sensors [I2C_SPI]: PIN_07</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('System Prototyping & Layout', 'Hardware Integration, Component Layout, Debugging')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Prototyping [GND]: PIN_06</span>
+                        </div>
                     </div>
                 </div>
+
+                <div class="mt-10 bg-slate-900 border border-slate-700 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
+                    <div id="pin-title" class="text-cyan-400 font-bold font-mono text-sm md:text-base mb-2 uppercase tracking-widest">>> WAITING FOR INTERRUPT <<</div>
+                    <div id="pin-desc" class="text-slate-400 text-xs md:text-sm font-medium">Select a pin above to read the module specification.</div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <section id="experience" class="px-6 md:px-12 py-24 md:py-32 border-t border-slate-800 relative">
-        <div class="crosshair top-10 left-1/2 hidden md:block">[ + ]</div>
-        
-        <div class="mb-20 fade-in text-center md:text-left">
-            <h2 class="text-lg md:text-2xl uppercase tracking-[0.2em] text-slate-200 font-bold cipher-trigger" data-cipher="OPERATIONS_LOG">
-                OPERATIONS_LOG
+    <section id="experience" class="px-6 md:px-12 py-24 md:py-32 border-t border-slate-800">
+        <div class="flex items-center gap-4 mb-16 md:mb-20 reveal">
+            <div class="h-[1px] bg-slate-700 flex-1"></div>
+            <h2 class="text-lg md:text-xl uppercase tracking-[0.2em] text-slate-200 font-bold flex items-center gap-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                Experience & Leadership <span class="text-cyan-400 font-normal font-mono text-[10px] md:text-xs ml-2 hidden md:inline">// Operations and extracurriculars</span>
             </h2>
-            <p class="font-mono text-xs text-cyan-400 mt-2">// Field experience, leadership, and auxiliary tasks.</p>
+            <div class="h-[1px] bg-slate-700 flex-1"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             
-            <div class="bg-slate-800/40 border border-slate-700 p-8 rounded hover:border-cyan-500/50 transition-all fade-in">
-                <p class="text-[10px] font-mono text-cyan-400 mb-3 border-b border-slate-700 pb-2">INTERNSHIP // JUN 2024</p>
-                <h4 class="text-lg font-bold text-slate-200 mb-4 cipher-trigger" data-cipher="Jivdaya Charitable Trust">Jivdaya Charitable Trust</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Assisted in veterinary support and operational logistics for wildlife rehabilitation. Contributed directly to a raptor research project by processing clinical and behavioral data.
-                </p>
+            <div class="space-y-10 reveal">
+                <h3 class="text-xl font-bold text-slate-200 mb-8 font-mono text-cyan-400 border-b border-slate-800 pb-2">> EXPERIENCE</h3>
+                
+                <div class="border-l-2 border-slate-700 pl-6 relative group timeline-item hover:border-cyan-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700"></div>
+                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">Summer Intern | Jivdaya Charitable Trust</h4>
+                    <p class="text-xs font-mono text-slate-500 mb-3 mt-1">JUNE 2024 // ANIMAL WELFARE</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Assisted in veterinary support and operational logistics for wildlife rehabilitation. Contributed directly to a raptor research project by processing clinical and behavioral data. Demonstrated effective crisis management and adaptability in a high-pressure field environment.
+                    </p>
+                </div>
+
+                <div class="border-l-2 border-slate-700 pl-6 relative group timeline-item hover:border-cyan-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700"></div>
+                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">GBBC Campus Organizer & Field Researcher</h4>
+                    <p class="text-xs font-mono text-slate-500 mb-3 mt-1">CITIZEN SCIENCE // BIODIVERSITY</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Coordinated the Great Backyard Bird Count (GBBC) on campus, managing volunteers and compiling critical data. Active field researcher participating in systematic bird counts across Ahmedabad, Dholera, and Nalsarovar.
+                    </p>
+                </div>
+
+                <div class="border-l-2 border-slate-700 pl-6 relative group timeline-item hover:border-cyan-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700"></div>
+                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">Conservation Photography & NSS Volunteer</h4>
+                    <p class="text-xs font-mono text-slate-500 mb-3 mt-1">2023 - 2024 // COMMUNITY SERVICE</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Active participant in the National Service Scheme (NSS). Dedicated to documenting local biodiversity through wildlife photography to support ecological awareness and conservation efforts.
+                    </p>
+                </div>
             </div>
 
-            <div class="bg-slate-800/40 border border-slate-700 p-8 rounded hover:border-cyan-500/50 transition-all md:mt-16 fade-in">
-                <p class="text-[10px] font-mono text-cyan-400 mb-3 border-b border-slate-700 pb-2">LEADERSHIP // CITIZEN SCIENCE</p>
-                <h4 class="text-lg font-bold text-slate-200 mb-4 cipher-trigger" data-cipher="GBBC Campus Organizer">GBBC Campus Organizer</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Coordinated the Great Backyard Bird Count (GBBC) on campus, managing volunteers and compiling critical data. Active field researcher participating in systematic bird counts across Ahmedabad and Nalsarovar.
-                </p>
-            </div>
+            <div class="space-y-12 reveal" style="transition-delay: 0.2s;">
+                
+                <div>
+                    <h3 class="text-xl font-bold text-slate-200 mb-6 font-mono text-cyan-400 border-b border-slate-800 pb-2">> AWARDS</h3>
+                    <div class="bg-slate-800/50 border border-slate-700 rounded p-5 mb-4 hover:border-amber-400/50 transition-colors">
+                        <div class="flex items-start gap-4">
+                            <div class="text-2xl mt-1">🏆</div>
+                            <div>
+                                <h4 class="font-bold text-slate-200">First Place Winner - MATLAB Innovation Challenge</h4>
+                                <p class="text-xs text-slate-500 font-mono mt-1 mb-2">2025 // IEEE HACKATHON: CODE THE FUTURE</p>
+                                <p class="text-sm text-slate-400">Awarded for designing a complex, multi-variable solar panel positioning algorithm utilizing MATLAB and Simulink.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/50 border border-slate-700 rounded p-5 hover:border-cyan-500/50 transition-colors">
+                        <div class="flex items-start gap-4">
+                            <div class="text-2xl mt-1">🏅</div>
+                            <div>
+                                <h4 class="font-bold text-slate-200">Semi-Finalist - Tata Club Energy National Quiz</h4>
+                                <p class="text-xs text-slate-500 font-mono mt-1">2020 // NATIONAL COMPETITION</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="bg-slate-800/40 border border-amber-900/50 p-8 rounded hover:border-amber-500/50 transition-all fade-in">
-                <p class="text-[10px] font-mono text-amber-400 mb-3 border-b border-amber-900/50 pb-2">AWARDS // 2025</p>
-                <h4 class="text-lg font-bold text-slate-200 mb-4 cipher-trigger" data-cipher="1st Place - MATLAB Challenge">1st Place - MATLAB Challenge</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Awarded for designing a complex, multi-variable solar panel positioning algorithm utilizing MATLAB and Simulink during the IEEE Hackathon: Code the Future.
-                </p>
-            </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-200 mb-6 font-mono text-cyan-400 border-b border-slate-800 pb-2">> EXTRACURRICULARS</h3>
+                    <ul class="space-y-5">
+                        <li class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-200">Technical Committee | Brahmand (Space Club)</h4>
+                                <p class="text-sm text-slate-400 mt-1">Collaborated to build a dual-axis sun tracker; specifically responsible for integrating sensors and developing the servo motor control logic.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-200">Committee Member | Sorriso (Photography Club)</h4>
+                                <p class="text-sm text-slate-400 mt-1">Maintained visual archives and managed event documentation for over 2 years, ensuring comprehensive coverage of university activities.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                            <div>
+                                <h4 class="font-bold text-slate-200">Member | VGA (Cinema Club)</h4>
+                                <p class="text-sm text-slate-400 mt-1">Managed event documentation and visual coverage for major cultural events.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="bg-slate-800/40 border border-slate-700 p-8 rounded hover:border-cyan-500/50 transition-all md:mt-12 lg:mt-0 fade-in">
-                <p class="text-[10px] font-mono text-cyan-400 mb-3 border-b border-slate-700 pb-2">EXTRACURRICULAR // SPACE CLUB</p>
-                <h4 class="text-lg font-bold text-slate-200 mb-4 cipher-trigger" data-cipher="Brahmand Tech Committee">Brahmand Tech Committee</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Collaborated to build a dual-axis sun tracker; specifically responsible for integrating sensors and developing the servo motor control logic.
-                </p>
             </div>
-
-            <div class="bg-slate-800/40 border border-slate-700 p-8 rounded hover:border-cyan-500/50 transition-all lg:mt-16 fade-in">
-                <p class="text-[10px] font-mono text-cyan-400 mb-3 border-b border-slate-700 pb-2">COMMUNITY // 2023-2024</p>
-                <h4 class="text-lg font-bold text-slate-200 mb-4 cipher-trigger" data-cipher="NSS & Conservation Photo">NSS & Conservation Photo</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Active participant in NSS community service initiatives. Dedicated to documenting local biodiversity through wildlife photography to support ecological awareness.
-                </p>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700 p-8 rounded hover:border-cyan-500/50 transition-all md:mt-12 lg:mt-32 fade-in">
-                <p class="text-[10px] font-mono text-cyan-400 mb-3 border-b border-slate-700 pb-2">EXTRACURRICULAR // CREATIVE</p>
-                <h4 class="text-lg font-bold text-slate-200 mb-4 cipher-trigger" data-cipher="Sorriso & VGA Clubs">Sorriso & VGA Clubs</h4>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Maintained visual archives and managed event documentation for over 2 years, ensuring comprehensive coverage of university and cultural activities.
-                </p>
-            </div>
-
         </div>
     </section>
 
-    <footer class="p-12 md:p-20 text-center border-t border-slate-800 relative bg-slate-950 overflow-hidden">
-        <div class="crosshair top-10 left-10 opacity-50">[ + ]</div>
-        <div class="crosshair bottom-10 right-10 opacity-50">[ + ]</div>
+    <footer class="p-12 md:p-20 text-center border-t border-slate-800 relative bg-slate-950">
+        <h2 class="text-4xl md:text-6xl font-black mb-12 text-slate-200 reveal relative z-10 tracking-tighter">CONTACT.</h2>
         
-        <h2 class="text-4xl md:text-7xl font-black mb-12 text-slate-200 fade-in relative z-10 tracking-tighter cipher-trigger" data-cipher="INITIATE_CONTACT">INITIATE_CONTACT</h2>
-        
-        <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12 font-mono text-xs md:text-sm text-slate-400 uppercase tracking-widest relative z-10 fade-in">
-            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-cyan-400 transition pb-1 border-b border-transparent hover:border-cyan-500">Email</a>
-            <a href="tel:+918320137190" class="hover:text-cyan-400 transition pb-1 border-b border-transparent hover:border-cyan-500">Phone</a>
-            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-cyan-400 transition pb-1 border-b border-transparent hover:border-cyan-500">LinkedIn</a>
-            <a href="https://github.com/techiitheblob/" class="hover:text-cyan-400 transition pb-1 border-b border-transparent hover:border-cyan-500">GitHub</a>
+        <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 font-mono text-xs md:text-sm text-slate-400 uppercase tracking-widest relative z-10">
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-cyan-400 transition">Email</a>
+            <a href="tel:+918320137190" class="hover:text-cyan-400 transition">Phone</a>
+            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-cyan-400 transition">LinkedIn</a>
+            <a href="https://github.com/techiitheblob/" class="hover:text-cyan-400 transition">GitHub</a>
         </div>
         
-        <div class="mt-24 text-[10px] text-slate-600 uppercase tracking-widest font-mono">
-            SYS_HALT // Kahaan Padiya © 2026 // Roll: 23BEC009
+        <div class="mt-20 text-[10px] text-slate-600 uppercase tracking-widest font-mono">
+            Kahaan Padiya © 2026 // Roll: 23BEC009
         </div>
     </footer>
 
     <script>
-        // 1. Fade-in Observer (Standard opacity/transform)
-        const fadeObserver = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
@@ -416,46 +455,10 @@
                     entry.target.classList.remove('active');
                 }
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        }, { threshold: 0.1, rootMargin: "0px 0px -10% 0px" });
 
-        document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 2. Matrix/Cipher Text Loading Effect
-        const cipherChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
-        
-        const cipherObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !entry.target.dataset.ciphering) {
-                    entry.target.dataset.ciphering = "true";
-                    const originalText = entry.target.getAttribute('data-cipher');
-                    let iteration = 0;
-                    
-                    clearInterval(entry.target.cipherInterval);
-                    
-                    entry.target.cipherInterval = setInterval(() => {
-                        entry.target.innerText = originalText.split("").map((letter, index) => {
-                            if(index < iteration || letter === " ") {
-                                return originalText[index];
-                            }
-                            return cipherChars[Math.floor(Math.random() * cipherChars.length)];
-                        }).join("");
-                        
-                        if(iteration >= originalText.length) {
-                            clearInterval(entry.target.cipherInterval);
-                        }
-                        iteration += 1 / 3; // Controls decode speed
-                    }, 30);
-                } else if (!entry.isIntersecting) {
-                    // Reset so it triggers again when scrolling back
-                    entry.target.dataset.ciphering = "";
-                    entry.target.innerText = entry.target.getAttribute('data-cipher').replace(/./g, '-');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.cipher-trigger').forEach(el => cipherObserver.observe(el));
-
-        // 3. Animated PCB Traces on Scroll
         const traces = document.querySelectorAll('.trace-scroll');
         window.addEventListener('scroll', () => {
             const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -470,7 +473,6 @@
             document.getElementById('tel-bar').style.width = (scrollPercent * 100) + '%';
         });
 
-        // 4. Live Telemetry Widget
         const telX = document.getElementById('tel-x');
         const telY = document.getElementById('tel-y');
 
@@ -479,7 +481,6 @@
             telY.innerText = e.clientY.toString().padStart(4, '0');
         });
 
-        // 5. Authentic Terminal Boot Sequence
         const bootMessages = [
             "<span class='text-slate-500'>$</span> ./init_hardware.sh",
             "Loading bootloader... <span class='text-green-400'>[OK]</span>",
@@ -532,35 +533,19 @@
 
         terminalObserver.observe(document.getElementById('terminal-trigger'));
 
-        // 6. Explicit MCU Pinout Hover Logic
         const pinTitle = document.getElementById('pin-title');
         const pinDesc = document.getElementById('pin-desc');
         
         function updatePinout(title, desc) {
-            // Apply cipher effect to pin updates too!
-            let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            let iteration = 0;
-            let fullTitle = `DOMAIN: ${title}`;
-            
-            clearInterval(pinTitle.interval);
+            pinTitle.innerText = `DOMAIN: ${title}`;
             pinTitle.classList.add('text-cyan-300');
             pinDesc.innerText = desc;
             pinDesc.classList.add('text-slate-200', 'font-bold');
             pinDesc.classList.remove('text-slate-400', 'font-medium');
-
-            pinTitle.interval = setInterval(() => {
-                pinTitle.innerText = fullTitle.split("").map((l, i) => {
-                    if(i < iteration || l === " ") return fullTitle[i];
-                    return chars[Math.floor(Math.random() * chars.length)];
-                }).join("");
-                if(iteration >= fullTitle.length) clearInterval(pinTitle.interval);
-                iteration += 1/2;
-            }, 20);
         }
         
         document.querySelectorAll('.pin-group').forEach(pin => {
             pin.addEventListener('mouseleave', () => {
-                clearInterval(pinTitle.interval);
                 pinTitle.innerText = '>> WAITING FOR INTERRUPT <<';
                 pinTitle.classList.remove('text-cyan-300');
                 pinDesc.innerText = 'Select a pin above to read the module specification.';
