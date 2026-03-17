@@ -8,13 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bg: #0f172a;         
-            --panel: #1e293b;      
-            --border: #334155;     
-            --text-main: #f8fafc;  
-            --text-muted: #94a3b8; 
-            --accent: #06b6d4;     
-            --accent-glow: rgba(6, 182, 212, 0.4);
+            --bg: #f4f1ea;          /* Light Beige PCB base */
+            --panel: #e8e4d9;       /* Slightly darker beige for panels */
+            --border: #d1cbbd;      /* Warm grey/brown border */
+            --text-main: #1c1917;   /* Dark stone text */
+            --text-muted: #57534e;  /* Muted stone text */
+            --accent: #16a34a;      /* PCB Solder Mask Green */
+            --accent-glow: rgba(22, 163, 74, 0.4);
         }
         
         body { 
@@ -23,8 +23,8 @@
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
             background-size: 40px 40px;
         }
         
@@ -40,12 +40,12 @@
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
             cursor: pointer; height: 140px; overflow: hidden; 
             border-bottom: 1px solid var(--border); 
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+            background: rgba(244, 241, 234, 0.6); backdrop-filter: blur(4px);
         }
         .project-card.expanded { 
             height: auto; min-height: 350px; 
             background: var(--panel); border-color: var(--accent); 
-            padding-bottom: 3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding-bottom: 3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         @media (min-width: 768px) { .project-card { height: 160px; } }
         
@@ -57,25 +57,25 @@
         .huge-text { font-size: clamp(3rem, 12vw, 10rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        .pcb-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; width: 100vw; height: 100vh; opacity: 0.6; }
+        .pcb-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; width: 100vw; height: 100vh; opacity: 0.5; }
         .trace { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 3000; stroke-dashoffset: 3000; transition: stroke-dashoffset 0.1s linear; }
 
-        .telemetry-widget { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); border-radius: 6px; }
+        .telemetry-widget { background: rgba(232, 228, 217, 0.9); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-radius: 6px; }
 
-        .ic-package { background: #111827; border: 2px solid #374151; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .ic-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 16px; background: var(--bg); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 2px solid #374151; }
+        .ic-package { background: #292524; border: 2px solid #44403c; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.2); position: relative; }
+        .ic-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 16px; background: var(--bg); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 2px solid #44403c; }
         
-        .pin-line-left, .pin-line-right { height: 2px; background: #475569; transition: all 0.3s; }
+        .pin-line-left, .pin-line-right { height: 2px; background: #a8a29e; transition: all 0.3s; }
         .pin-group:hover .pin-line-left, .pin-group:hover .pin-line-right { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
         .pin-group:hover .pin-head { background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         
-        .pin-head { width: 16px; height: 10px; background: #9ca3af; transition: all 0.3s; }
+        .pin-head { width: 16px; height: 10px; background: #d6d3d1; transition: all 0.3s; }
         
         .timeline-dot { transition: all 0.3s; }
         .timeline-item:hover .timeline-dot { background-color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
     </style>
 </head>
-<body class="selection:bg-[#06b6d4] selection:text-white">
+<body class="selection:bg-green-500 selection:text-white">
 
     <svg class="pcb-bg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
         <path class="trace trace-scroll" d="M -100 100 L 200 100 L 300 200 L 300 800 L 400 900 L 1100 900" />
@@ -83,170 +83,170 @@
         <path class="trace trace-scroll" d="M 0 500 L 100 500 L 150 450 L 500 450 L 550 500 L 1100 500" opacity="0.5"/>
     </svg>
 
-    <div class="fixed bottom-6 right-6 p-4 border border-slate-700 telemetry-widget font-mono text-xs text-slate-400 z-50 pointer-events-none hidden md:block">
-        <div class="text-cyan-400 font-bold border-b border-slate-700 pb-2 mb-3 tracking-widest">SYS_TELEMETRY</div>
-        <div class="flex justify-between w-40 mb-1"><span>POS_X:</span> <span id="tel-x" class="text-slate-200">0000</span></div>
-        <div class="flex justify-between w-40 mb-1"><span>POS_Y:</span> <span id="tel-y" class="text-slate-200">0000</span></div>
-        <div class="flex justify-between w-40 mb-2"><span>SCROLL:</span> <span id="tel-scroll" class="text-slate-200">00%</span></div>
-        <div class="w-full h-1 bg-slate-800 rounded overflow-hidden">
-            <div id="tel-bar" class="h-full bg-cyan-400 transition-all duration-75" style="width: 0%"></div>
+    <div class="fixed bottom-6 right-6 p-4 border border-stone-300 telemetry-widget font-mono text-xs text-stone-500 z-50 pointer-events-none hidden md:block">
+        <div class="text-green-700 font-bold border-b border-stone-300 pb-2 mb-3 tracking-widest">SYS_TELEMETRY</div>
+        <div class="flex justify-between w-40 mb-1"><span>POS_X:</span> <span id="tel-x" class="text-stone-800">0000</span></div>
+        <div class="flex justify-between w-40 mb-1"><span>POS_Y:</span> <span id="tel-y" class="text-stone-800">0000</span></div>
+        <div class="flex justify-between w-40 mb-2"><span>SCROLL:</span> <span id="tel-scroll" class="text-stone-800">00%</span></div>
+        <div class="w-full h-1 bg-stone-300 rounded overflow-hidden">
+            <div id="tel-bar" class="h-full bg-green-500 transition-all duration-75" style="width: 0%"></div>
         </div>
     </div>
 
-    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
-        <span class="font-bold tracking-tighter text-xl text-cyan-400">Kahaan.Padiya</span>
-        <div class="space-x-3 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-slate-400">
-            <a href="#work" class="hover:text-cyan-400 transition">Projects</a>
-            <a href="#skills" class="hover:text-cyan-400 transition">Skills</a>
-            <a href="#experience" class="hover:text-cyan-400 transition hidden sm:inline">Experience</a>
-            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-white transition bg-cyan-600/20 px-3 py-1 rounded text-cyan-400 border border-cyan-500/30">Contact</a>
+    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 bg-[#f4f1ea]/80 backdrop-blur-md border-b border-stone-300">
+        <span class="font-bold tracking-tighter text-xl text-green-700">Kahaan.Padiya</span>
+        <div class="space-x-3 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-stone-500">
+            <a href="#work" class="hover:text-green-700 transition">Projects</a>
+            <a href="#skills" class="hover:text-green-700 transition">Skills</a>
+            <a href="#experience" class="hover:text-green-700 transition hidden sm:inline">Experience</a>
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-green-900 transition bg-green-600/10 px-3 py-1 rounded text-green-700 border border-green-500/30">Contact</a>
         </div>
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 pb-20 relative">
-        <div class="inline-block px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs font-mono font-bold mb-6 border border-cyan-500/30 rounded w-max reveal">PORTFOLIO // EMBEDDED_SYS</div>
-        <h1 class="huge-text reveal text-slate-100 drop-shadow-lg">SHAPING<br><span class="text-slate-600">SILICON.</span></h1>
+        <div class="inline-block px-3 py-1 bg-green-200/50 text-green-800 text-xs font-mono font-bold mb-6 border border-green-500/30 rounded w-max reveal">PORTFOLIO // EMBEDDED_SYS</div>
+        <h1 class="huge-text reveal text-stone-800 drop-shadow-sm">SHAPING<br><span class="text-stone-400">SILICON.</span></h1>
         
         <div class="mt-8 md:mt-12">
             <div class="reveal" style="transition-delay: 0.1s;">
-                <p class="text-lg md:text-xl font-light leading-relaxed text-slate-400 max-w-2xl">
+                <p class="text-lg md:text-xl font-light leading-relaxed text-stone-600 max-w-2xl">
                     Electronics & Communication Engineer at PDEU. Bridging the gap between analog reality and digital precision through DSP, embedded architecture, CAD modeling, and high-fidelity audio systems.
                 </p>
                 
-                <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-10 text-xs md:text-sm font-mono text-slate-500">
-                    <p class="flex items-center gap-2 text-slate-300">
-                        <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span> 
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-10 text-xs md:text-sm font-mono text-stone-500">
+                    <p class="flex items-center gap-2 text-stone-700">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> 
                         OPEN TO OPPORTUNITIES
                     </p>
-                    <p class="hidden sm:block text-slate-700">|</p>
+                    <p class="hidden sm:block text-stone-400">|</p>
                     <p>LOC: Ahmedabad, IN</p>
-                    <p class="hidden sm:block text-slate-700">|</p>
+                    <p class="hidden sm:block text-stone-400">|</p>
                     <p>DEG: B.Tech ECE '27</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="work" class="px-6 md:px-12 py-24 md:py-32 border-t border-slate-800">
+    <section id="work" class="px-6 md:px-12 py-24 md:py-32 border-t border-stone-300">
         <div class="flex items-center gap-4 mb-16 md:mb-20 reveal">
-            <div class="h-[1px] bg-slate-700 flex-1"></div>
-            <h2 class="text-lg md:text-xl uppercase tracking-[0.2em] text-slate-200 font-bold flex items-center gap-3">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                Projects <span class="text-cyan-400 font-normal font-mono text-[10px] md:text-xs ml-2 hidden md:inline">// Project Repository (Click rows to expand)</span>
+            <div class="h-[1px] bg-stone-300 flex-1"></div>
+            <h2 class="text-lg md:text-xl uppercase tracking-[0.2em] text-stone-800 font-bold flex items-center gap-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                Projects <span class="text-green-700 font-normal font-mono text-[10px] md:text-xs ml-2 hidden md:inline">// Project Repository (Click rows to expand)</span>
             </h2>
-            <div class="h-[1px] bg-slate-700 flex-1"></div>
+            <div class="h-[1px] bg-stone-300 flex-1"></div>
         </div>
         
-        <div class="space-y-0 border-t border-slate-800">
+        <div class="space-y-0 border-t border-stone-300">
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
-                    <span class="text-slate-500 font-mono text-sm">01</span>
-                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">Minimoog Poly-Synth</h3>
-                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 group-hover:border-cyan-400 transition-all font-mono text-xs">+</div>
+                    <span class="text-stone-400 font-mono text-sm">01</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">Minimoog Poly-Synth</h3>
+                    <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white group-hover:border-green-500 transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
-                    <p class="text-slate-300 text-base leading-relaxed">
+                    <p class="text-stone-700 text-base leading-relaxed">
                         Developing a polyphonic Virtual Analog (VA) synthesis engine. Implementing an 8-voice allocation architecture and emulating non-linear transistor ladder filters for real-time embedded performance.
                     </p>
                     <div class="space-y-4 font-mono">
-                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Technical Stack</div>
-                        <p class="text-sm text-cyan-400">C++ | Digital Signal Processing | MCU</p>
-                        <span class="inline-block mt-4 border border-cyan-900 bg-cyan-950/30 px-3 py-1 text-xs text-cyan-300 rounded">Status: Ongoing (2026)</span>
+                        <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Technical Stack</div>
+                        <p class="text-sm text-green-700">C++ | Digital Signal Processing | MCU</p>
+                        <span class="inline-block mt-4 border border-green-500 bg-green-100 px-3 py-1 text-xs text-green-800 rounded">Status: Ongoing (2026)</span>
                     </div>
                 </div>
             </div>
 
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
-                    <span class="text-slate-500 font-mono text-sm">02</span>
-                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">ΔΣ Modulator Sim</h3>
-                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
+                    <span class="text-stone-400 font-mono text-sm">02</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">ΔΣ Modulator Sim</h3>
+                    <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
-                    <p class="text-slate-300 text-base leading-relaxed">
+                    <p class="text-stone-700 text-base leading-relaxed">
                         Modeled a 2nd-order Delta-Sigma modulator to analyze noise-shaping for high-fidelity audio. Validated system architecture and signal flow while analyzing trade-offs between OSR and SNR.
                     </p>
                     <div class="space-y-4 font-mono">
-                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Environment</div>
-                        <p class="text-sm text-cyan-400">MATLAB | Simulink | Mixed-Signal VLSI</p>
+                        <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Environment</div>
+                        <p class="text-sm text-green-700">MATLAB | Simulink | Mixed-Signal VLSI</p>
                     </div>
                 </div>
             </div>
 
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
-                    <span class="text-slate-500 font-mono text-sm">03</span>
-                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">Solar Tracker Alg.</h3>
-                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
+                    <span class="text-stone-400 font-mono text-sm">03</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">Solar Tracker Alg.</h3>
+                    <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
-                    <p class="text-slate-300 text-base leading-relaxed">
+                    <p class="text-stone-700 text-base leading-relaxed">
                         Led a team to develop an algorithm that determines precise solar panel positioning for maximum output. Integrated complex multi-variable analysis including sun path, shadow casting, and thermal properties.
                     </p>
                     <div class="space-y-4 font-mono">
-                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Achievement</div>
-                        <p class="text-sm text-amber-400">🏆 1st Place - MATLAB Innovation Challenge</p>
+                        <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Achievement</div>
+                        <p class="text-sm text-amber-600 font-bold">🏆 1st Place - MATLAB Innovation Challenge</p>
                     </div>
                 </div>
             </div>
 
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
-                    <span class="text-slate-500 font-mono text-sm">04</span>
-                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-cyan-400 transition-colors flex-1 ml-4 md:ml-12">TA Robot Logic</h3>
-                    <div class="w-8 h-8 rounded border border-slate-600 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-slate-900 transition-all font-mono text-xs">+</div>
+                    <span class="text-stone-400 font-mono text-sm">04</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">TA Robot Logic</h3>
+                    <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
-                    <p class="text-slate-300 text-base leading-relaxed">
+                    <p class="text-stone-700 text-base leading-relaxed">
                         Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control. Designed enclosures and mounts.
                     </p>
                     <div class="space-y-4 font-mono">
-                        <div class="text-xs uppercase text-slate-500 font-bold tracking-widest border-b border-slate-700 pb-2">Hardware & Design</div>
-                        <p class="text-sm text-cyan-400">Asus Tinker Board | Arduino | SolidWorks</p>
+                        <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Hardware & Design</div>
+                        <p class="text-sm text-green-700">Asus Tinker Board | Arduino | SolidWorks</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="skills" class="px-6 md:px-12 py-24 md:py-32 bg-slate-900/80 border-t border-slate-800 backdrop-blur-md">
+    <section id="skills" class="px-6 md:px-12 py-24 md:py-32 bg-[#e8e4d9]/80 border-t border-stone-300 backdrop-blur-md">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-20">
             
             <div class="lg:col-span-5 reveal" id="terminal-trigger">
-                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-stone-900">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                     Technical Skills
                 </h4>
-                <p class="text-slate-400 text-sm mb-8 font-mono text-[11px]">// System initialization & software proficiencies loading...</p>
+                <p class="text-stone-500 text-sm mb-8 font-mono text-[11px]">// System initialization & software proficiencies loading...</p>
                 
-                <div class="bg-[#0f111a] border border-slate-600 rounded-lg overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-                    <div class="bg-slate-800 px-4 py-2 flex items-center gap-3 border-b border-slate-600">
+                <div class="bg-[#050f08] border border-stone-400 rounded-lg overflow-hidden shadow-lg">
+                    <div class="bg-[#0a1f11] px-4 py-2 flex items-center gap-3 border-b border-stone-600">
                         <div class="flex gap-2">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
                             <div class="w-3 h-3 rounded-full bg-amber-500"></div>
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
-                        <span class="text-xs text-slate-400 font-mono tracking-wider ml-4">user@kahaan-sys: ~</span>
+                        <span class="text-xs text-green-600/60 font-mono tracking-wider ml-4">user@kahaan-sys: ~</span>
                         <div class="ml-auto flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                            <span class="text-[10px] text-green-400 font-mono uppercase font-bold tracking-widest">Live Log</span>
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span class="text-[10px] text-green-500 font-mono uppercase font-bold tracking-widest">Live Log</span>
                         </div>
                     </div>
-                    <div class="p-5 h-[350px] overflow-y-auto font-mono text-xs md:text-sm text-slate-300 leading-relaxed relative" id="term-container">
+                    <div class="p-5 h-[350px] overflow-y-auto font-mono text-xs md:text-sm text-green-400 leading-relaxed relative" id="term-container">
                         <div id="terminal-output" class="space-y-1"></div>
-                        <span id="terminal-cursor" class="text-cyan-400 animate-pulse hidden block mt-1">█</span>
+                        <span id="terminal-cursor" class="text-green-500 animate-pulse hidden block mt-1">█</span>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-7 reveal" style="transition-delay: 0.2s;">
-                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M22 16h-4"/><path d="M6 16H2"/><path d="M18 20v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg>
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-stone-900">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M22 16h-4"/><path d="M6 16H2"/><path d="M18 20v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg>
                     Skills Map
                 </h4>
-                <p class="text-slate-400 text-sm mb-6 font-mono text-[11px]">// Interactive Data Sheet: Hover over the pins to inspect my technical domains.</p>
+                <p class="text-stone-500 text-sm mb-6 font-mono text-[11px]">// Interactive Data Sheet: Hover over the pins to inspect my technical domains.</p>
                 
-                <div class="inline-block bg-cyan-900/40 text-cyan-400 border border-cyan-500/50 px-4 py-2 rounded text-[10px] md:text-xs font-bold tracking-widest animate-pulse mb-8 shadow-lg">
+                <div class="inline-block bg-green-200 text-green-800 border border-green-500/50 px-4 py-2 rounded text-[10px] md:text-xs font-bold tracking-widest animate-pulse mb-8 shadow-sm">
                     SCANNING... HOVER OVER PINS TO INSPECT DOMAINS
                 </div>
 
@@ -254,27 +254,27 @@
                     
                     <div class="flex flex-col gap-6 md:gap-8 items-end z-10 w-full">
                         <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Mixed-Signal Design', 'Delta-Sigma Modulators, VLSI Design, Analog Circuits')">
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_01 [ADC]: Mixed-Signal</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_01 [ADC]: Mixed-Signal</span>
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
                         <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Digital Signal Processing', 'Audio Engineering, Noise Shaping, Active Filtering')">
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_02 [DSP]: Signal Proc.</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_02 [DSP]: Signal Proc.</span>
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
                         <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Embedded C/C++ & Assembly', 'AVR/ATmega Architecture, Assembly (8086), Python')">
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_03 [TXD]: C_CPP & ASM</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_03 [TXD]: C_CPP & ASM</span>
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
                         <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('MATLAB & Simulation Environments', 'Simulink, Proteus, LTspice, System Modeling')">
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_04 [SIM]: MATLAB_SYS</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_04 [SIM]: MATLAB_SYS</span>
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
                         <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('3D Modeling & Enclosures', 'AutoCAD, SolidWorks, SketchUp Hardware Design')">
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors mr-2 text-right">PIN_05 [CAD]: 3D Modeling</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_05 [CAD]: 3D Modeling</span>
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
@@ -282,87 +282,87 @@
                     
                     <div class="w-20 h-[300px] md:w-28 md:h-[350px] lg:w-32 ic-package rounded-sm flex items-center justify-center shrink-0">
                         <div class="ic-notch"></div>
-                        <div class="absolute top-4 left-3 md:left-4 w-2 h-2 md:w-3 md:h-3 rounded-full bg-slate-700 shadow-inner border border-slate-800"></div>
-                        <span class="rotate-90 text-slate-500 font-bold tracking-widest text-lg md:text-xl lg:text-2xl opacity-50 drop-shadow-md whitespace-nowrap">KP-2027</span>
+                        <div class="absolute top-4 left-3 md:left-4 w-2 h-2 md:w-3 md:h-3 rounded-full bg-stone-700 shadow-inner border border-stone-800"></div>
+                        <span class="rotate-90 text-stone-400 font-bold tracking-widest text-lg md:text-xl lg:text-2xl opacity-70 drop-shadow-md whitespace-nowrap">KP-2027</span>
                     </div>
 
                     <div class="flex flex-col gap-6 md:gap-8 items-start z-10 w-full">
                         <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Power Systems & Optimization', 'Solar Algorithms, Panel Thermal Properties, Efficiency')">
                             <div class="pin-head rounded-r-sm shrink-0"></div>
                             <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Power Sys. [VCC]: PIN_10</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Power Sys. [VCC]: PIN_10</span>
                         </div>
                         <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Robotics & Motor Control', 'Servo Logic, Arduino Framework, Dual-Axis Tracking')">
                             <div class="pin-head rounded-r-sm shrink-0"></div>
                             <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Motor Control [PWM]: PIN_09</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Motor Control [PWM]: PIN_09</span>
                         </div>
                         <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Audio Synthesis & Generation', 'Transistor Ladder Filters, Virtual Analog Engines')">
                             <div class="pin-head rounded-r-sm shrink-0"></div>
                             <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Audio Synth [I2S]: PIN_08</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Audio Synth [I2S]: PIN_08</span>
                         </div>
                         <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Sensor Integration & Comm', 'IMU, Asus Tinker Board, Raspberry Pi, I2C/SPI Bus')">
                             <div class="pin-head rounded-r-sm shrink-0"></div>
                             <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Sensors [I2C_SPI]: PIN_07</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Sensors [I2C_SPI]: PIN_07</span>
                         </div>
                         <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('System Prototyping & Layout', 'Hardware Integration, Component Layout, Debugging')">
                             <div class="pin-head rounded-r-sm shrink-0"></div>
                             <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-slate-400 font-bold group-hover:text-cyan-400 transition-colors ml-2 text-left">Prototyping [GND]: PIN_06</span>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Prototyping [GND]: PIN_06</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-10 bg-slate-900 border border-slate-700 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-lg relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
-                    <div id="pin-title" class="text-cyan-400 font-bold font-mono text-sm md:text-base mb-2 uppercase tracking-widest">>> WAITING FOR INTERRUPT <<</div>
-                    <div id="pin-desc" class="text-slate-400 text-xs md:text-sm font-medium">Select a pin above to read the module specification.</div>
+                <div class="mt-10 bg-[#f4f1ea] border border-stone-300 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
+                    <div id="pin-title" class="text-green-700 font-bold font-mono text-sm md:text-base mb-2 uppercase tracking-widest">>> WAITING FOR INTERRUPT <<</div>
+                    <div id="pin-desc" class="text-stone-600 text-xs md:text-sm font-medium">Select a pin above to read the module specification.</div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <section id="experience" class="px-6 md:px-12 py-24 md:py-32 border-t border-slate-800">
+    <section id="experience" class="px-6 md:px-12 py-24 md:py-32 border-t border-stone-300">
         <div class="flex items-center gap-4 mb-16 md:mb-20 reveal">
-            <div class="h-[1px] bg-slate-700 flex-1"></div>
-            <h2 class="text-lg md:text-xl uppercase tracking-[0.2em] text-slate-200 font-bold flex items-center gap-3">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                Experience & Leadership <span class="text-cyan-400 font-normal font-mono text-[10px] md:text-xs ml-2 hidden md:inline">// Auxiliary systems, field operations, and logs...</span>
+            <div class="h-[1px] bg-stone-300 flex-1"></div>
+            <h2 class="text-lg md:text-xl uppercase tracking-[0.2em] text-stone-800 font-bold flex items-center gap-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                Experience & Leadership <span class="text-green-700 font-normal font-mono text-[10px] md:text-xs ml-2 hidden md:inline">// Auxiliary systems, field operations, and logs...</span>
             </h2>
-            <div class="h-[1px] bg-slate-700 flex-1"></div>
+            <div class="h-[1px] bg-stone-300 flex-1"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             
             <div class="space-y-10 reveal">
-                <h3 class="text-xl font-bold text-slate-200 mb-8 font-mono text-cyan-400 border-b border-slate-800 pb-2">> EXPERIENCE</h3>
+                <h3 class="text-xl font-bold mb-8 font-mono text-green-700 border-b border-stone-300 pb-2">> EXPERIENCE</h3>
                 
-                <div class="border-l-2 border-slate-700 pl-6 relative group timeline-item hover:border-cyan-500">
-                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700"></div>
-                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">Summer Intern | Jivdaya Charitable Trust</h4>
-                    <p class="text-xs font-mono text-slate-500 mb-3 mt-1">JUNE 2024 // ANIMAL WELFARE</p>
-                    <p class="text-sm text-slate-400 leading-relaxed">
+                <div class="border-l-2 border-stone-300 pl-6 relative group timeline-item hover:border-green-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#f4f1ea] border-2 border-stone-400"></div>
+                    <h4 class="text-lg font-bold text-stone-800 group-hover:text-green-700 transition-colors">Summer Intern | Jivdaya Charitable Trust</h4>
+                    <p class="text-xs font-mono text-stone-500 mb-3 mt-1">JUNE 2024 // ANIMAL WELFARE</p>
+                    <p class="text-sm text-stone-700 leading-relaxed">
                         Assisted in veterinary support and operational logistics for wildlife rehabilitation. Contributed directly to a raptor research project by processing clinical and behavioral data. Demonstrated effective crisis management and adaptability in a high-pressure field environment.
                     </p>
                 </div>
 
-                <div class="border-l-2 border-slate-700 pl-6 relative group timeline-item hover:border-cyan-500">
-                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700"></div>
-                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">GBBC Campus Organizer & Field Researcher</h4>
-                    <p class="text-xs font-mono text-slate-500 mb-3 mt-1">CITIZEN SCIENCE // BIODIVERSITY</p>
-                    <p class="text-sm text-slate-400 leading-relaxed">
+                <div class="border-l-2 border-stone-300 pl-6 relative group timeline-item hover:border-green-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#f4f1ea] border-2 border-stone-400"></div>
+                    <h4 class="text-lg font-bold text-stone-800 group-hover:text-green-700 transition-colors">GBBC Campus Organizer & Field Researcher</h4>
+                    <p class="text-xs font-mono text-stone-500 mb-3 mt-1">CITIZEN SCIENCE // BIODIVERSITY</p>
+                    <p class="text-sm text-stone-700 leading-relaxed">
                         Coordinated the Great Backyard Bird Count (GBBC) on campus, managing volunteers and compiling critical data. Active field researcher participating in systematic bird counts across Ahmedabad, Dholera, and Nalsarovar.
                     </p>
                 </div>
 
-                <div class="border-l-2 border-slate-700 pl-6 relative group timeline-item hover:border-cyan-500">
-                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700"></div>
-                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">Conservation Photography & NSS Volunteer</h4>
-                    <p class="text-xs font-mono text-slate-500 mb-3 mt-1">2023 - 2024 // COMMUNITY SERVICE</p>
-                    <p class="text-sm text-slate-400 leading-relaxed">
+                <div class="border-l-2 border-stone-300 pl-6 relative group timeline-item hover:border-green-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#f4f1ea] border-2 border-stone-400"></div>
+                    <h4 class="text-lg font-bold text-stone-800 group-hover:text-green-700 transition-colors">Conservation Photography & NSS Volunteer</h4>
+                    <p class="text-xs font-mono text-stone-500 mb-3 mt-1">2023 - 2024 // COMMUNITY SERVICE</p>
+                    <p class="text-sm text-stone-700 leading-relaxed">
                         Active participant in the National Service Scheme (NSS). Dedicated to documenting local biodiversity through wildlife photography to support ecological awareness and conservation efforts.
                     </p>
                 </div>
@@ -371,50 +371,50 @@
             <div class="space-y-12 reveal" style="transition-delay: 0.2s;">
                 
                 <div>
-                    <h3 class="text-xl font-bold text-slate-200 mb-6 font-mono text-cyan-400 border-b border-slate-800 pb-2">> AWARDS</h3>
-                    <div class="bg-slate-800/50 border border-slate-700 rounded p-5 mb-4 hover:border-amber-400/50 transition-colors">
+                    <h3 class="text-xl font-bold mb-6 font-mono text-green-700 border-b border-stone-300 pb-2">> AWARDS</h3>
+                    <div class="bg-white/50 border border-stone-300 rounded p-5 mb-4 hover:border-amber-500/50 transition-colors shadow-sm">
                         <div class="flex items-start gap-4">
                             <div class="text-2xl mt-1">🏆</div>
                             <div>
-                                <h4 class="font-bold text-slate-200">First Place Winner - MATLAB Innovation Challenge</h4>
-                                <p class="text-xs text-slate-500 font-mono mt-1 mb-2">2025 // IEEE HACKATHON: CODE THE FUTURE</p>
-                                <p class="text-sm text-slate-400">Awarded for designing a complex, multi-variable solar panel positioning algorithm utilizing MATLAB and Simulink.</p>
+                                <h4 class="font-bold text-stone-800">First Place Winner - MATLAB Innovation Challenge</h4>
+                                <p class="text-xs text-stone-500 font-mono mt-1 mb-2">2025 // IEEE HACKATHON: CODE THE FUTURE</p>
+                                <p class="text-sm text-stone-700">Awarded for designing a complex, multi-variable solar panel positioning algorithm utilizing MATLAB and Simulink.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-slate-800/50 border border-slate-700 rounded p-5 hover:border-cyan-500/50 transition-colors">
+                    <div class="bg-white/50 border border-stone-300 rounded p-5 hover:border-green-500/50 transition-colors shadow-sm">
                         <div class="flex items-start gap-4">
                             <div class="text-2xl mt-1">🏅</div>
                             <div>
-                                <h4 class="font-bold text-slate-200">Semi-Finalist - Tata Club Energy National Quiz</h4>
-                                <p class="text-xs text-slate-500 font-mono mt-1">2020 // NATIONAL COMPETITION</p>
+                                <h4 class="font-bold text-stone-800">Semi-Finalist - Tata Club Energy National Quiz</h4>
+                                <p class="text-xs text-stone-500 font-mono mt-1">2020 // NATIONAL COMPETITION</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <h3 class="text-xl font-bold text-slate-200 mb-6 font-mono text-cyan-400 border-b border-slate-800 pb-2">> EXTRACURRICULARS</h3>
+                    <h3 class="text-xl font-bold mb-6 font-mono text-green-700 border-b border-stone-300 pb-2">> EXTRACURRICULARS</h3>
                     <ul class="space-y-5">
                         <li class="flex gap-4 items-start">
-                            <div class="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0"></div>
                             <div>
-                                <h4 class="font-bold text-slate-200">Technical Committee | Brahmand (Space Club)</h4>
-                                <p class="text-sm text-slate-400 mt-1">Collaborated to build a dual-axis sun tracker; specifically responsible for integrating sensors and developing the servo motor control logic.</p>
+                                <h4 class="font-bold text-stone-800">Technical Committee | Brahmand (Space Club)</h4>
+                                <p class="text-sm text-stone-700 mt-1">Collaborated to build a dual-axis sun tracker; specifically responsible for integrating sensors and developing the servo motor control logic.</p>
                             </div>
                         </li>
                         <li class="flex gap-4 items-start">
-                            <div class="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0"></div>
                             <div>
-                                <h4 class="font-bold text-slate-200">Committee Member | Sorriso (Photography Club)</h4>
-                                <p class="text-sm text-slate-400 mt-1">Maintained visual archives and managed event documentation for over 2 years, ensuring comprehensive coverage of university activities.</p>
+                                <h4 class="font-bold text-stone-800">Committee Member | Sorriso (Photography Club)</h4>
+                                <p class="text-sm text-stone-700 mt-1">Maintained visual archives and managed event documentation for over 2 years, ensuring comprehensive coverage of university activities.</p>
                             </div>
                         </li>
                         <li class="flex gap-4 items-start">
-                            <div class="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0"></div>
                             <div>
-                                <h4 class="font-bold text-slate-200">Member | VGA (Cinema Club)</h4>
-                                <p class="text-sm text-slate-400 mt-1">Managed event documentation and visual coverage for major cultural events.</p>
+                                <h4 class="font-bold text-stone-800">Member | VGA (Cinema Club)</h4>
+                                <p class="text-sm text-stone-700 mt-1">Managed event documentation and visual coverage for major cultural events.</p>
                             </div>
                         </li>
                     </ul>
@@ -424,17 +424,17 @@
         </div>
     </section>
 
-    <footer class="p-12 md:p-20 text-center border-t border-slate-800 relative bg-slate-950">
-        <h2 class="text-4xl md:text-6xl font-black mb-12 text-slate-200 reveal relative z-10 tracking-tighter">CONTACT.</h2>
+    <footer class="p-12 md:p-20 text-center border-t border-stone-300 relative bg-[#e3decb]">
+        <h2 class="text-4xl md:text-6xl font-black mb-12 text-stone-800 reveal relative z-10 tracking-tighter">CONTACT.</h2>
         
-        <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 font-mono text-xs md:text-sm text-slate-400 uppercase tracking-widest relative z-10">
-            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-cyan-400 transition">Email</a>
-            <a href="tel:+918320137190" class="hover:text-cyan-400 transition">Phone</a>
-            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-cyan-400 transition">LinkedIn</a>
-            <a href="https://github.com/techiitheblob/" class="hover:text-cyan-400 transition">GitHub</a>
+        <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 font-mono text-xs md:text-sm text-stone-600 uppercase tracking-widest relative z-10">
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-green-700 transition">Email</a>
+            <a href="tel:+918320137190" class="hover:text-green-700 transition">Phone</a>
+            <a href="https://www.linkedin.com/in/kahaan-padiya/" class="hover:text-green-700 transition">LinkedIn</a>
+            <a href="https://github.com/techiitheblob/" class="hover:text-green-700 transition">GitHub</a>
         </div>
         
-        <div class="mt-20 text-[10px] text-slate-600 uppercase tracking-widest font-mono">
+        <div class="mt-20 text-[10px] text-stone-500 uppercase tracking-widest font-mono">
             Kahaan Padiya © 2026 // Roll: 23BEC009
         </div>
     </footer>
@@ -475,10 +475,10 @@
         });
 
         const bootMessages = [
-            "<span class='text-slate-500'>$</span> ./init_hardware.sh",
+            "<span class='text-green-700'>$</span> ./init_hardware.sh",
             "Loading bootloader... <span class='text-green-400'>[OK]</span>",
             "Mounting file system... <span class='text-green-400'>[OK]</span>",
-            "Checking CPU architecture: <span class='text-cyan-400'>ATmega/AVR detected</span>",
+            "Checking CPU architecture: <span class='text-green-400'>ATmega/AVR detected</span>",
             "Allocating SRAM... 8192 bytes mapped",
             "Initializing System Modules...",
             "  -> Loaded: Mixed-Signal Design Patterns",
@@ -489,9 +489,9 @@
             "  -> Simulink <span class='text-green-400'>[OK]</span>",
             "  -> Proteus <span class='text-green-400'>[OK]</span>",
             "Compiling Embedded C++ toolchain... done.",
-            "<span class='text-amber-400'>Warning: Over-Sampling Ratio (OSR) optimal.</span>",
+            "<span class='text-amber-500'>Warning: Over-Sampling Ratio (OSR) optimal.</span>",
             "System initialization complete.",
-            "<span class='text-slate-500'>$</span> _"
+            "<span class='text-green-700'>$</span> _"
         ];
         
         const termOutput = document.getElementById('terminal-output');
@@ -531,19 +531,19 @@
         
         function updatePinout(title, desc) {
             pinTitle.innerText = `DOMAIN: ${title}`;
-            pinTitle.classList.add('text-cyan-300');
+            pinTitle.classList.add('text-green-700');
             pinDesc.innerText = desc;
-            pinDesc.classList.add('text-slate-200', 'font-bold');
-            pinDesc.classList.remove('text-slate-400', 'font-medium');
+            pinDesc.classList.add('text-stone-800', 'font-bold');
+            pinDesc.classList.remove('text-stone-600', 'font-medium');
         }
         
         document.querySelectorAll('.pin-group').forEach(pin => {
             pin.addEventListener('mouseleave', () => {
                 pinTitle.innerText = '>> WAITING FOR INTERRUPT <<';
-                pinTitle.classList.remove('text-cyan-300');
+                pinTitle.classList.remove('text-green-700');
                 pinDesc.innerText = 'Select a pin above to read the module specification.';
-                pinDesc.classList.remove('text-slate-200', 'font-bold');
-                pinDesc.classList.add('text-slate-400', 'font-medium');
+                pinDesc.classList.remove('text-stone-800', 'font-bold');
+                pinDesc.classList.add('text-stone-600', 'font-medium');
             });
         });
     </script>
