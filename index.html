@@ -95,33 +95,40 @@
 
     <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 bg-[#f4f1ea]/80 backdrop-blur-md border-b border-stone-300">
         <span class="font-bold tracking-tighter text-xl text-green-700">Kahaan.Padiya</span>
-        <div class="space-x-3 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-stone-500">
+        <div class="space-x-3 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-stone-500 flex items-center">
+            <a href="#experience" class="hover:text-green-700 transition">Experience</a>
             <a href="#work" class="hover:text-green-700 transition">Projects</a>
             <a href="#skills" class="hover:text-green-700 transition">Skills</a>
-            <a href="#experience" class="hover:text-green-700 transition hidden sm:inline">Experience</a>
-            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-green-900 transition bg-green-600/10 px-3 py-1 rounded text-green-700 border border-green-500/30">Contact</a>
+            <a href="#awards" class="hover:text-green-700 transition hidden sm:inline">Patents & Honors</a>
+            <a href="Kahaan_Padiya_CV.pdf" target="_blank" class="hover:bg-green-700 hover:text-white transition bg-green-600/10 px-3 py-1 rounded text-green-700 border border-green-500/30 flex items-center gap-1">
+                <span>Resume (PDF)</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </a>
+            <a href="mailto:Kahaanpadiya@gmail.com" class="hover:text-green-900 transition text-stone-500 hidden md:inline">Contact</a>
         </div>
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 pb-20 relative">
-        <div class="inline-block px-3 py-1 bg-green-200/50 text-green-800 text-xs font-mono font-bold mb-6 border border-green-500/30 rounded w-max reveal">PORTFOLIO // EMBEDDED_SYS</div>
+        <div class="inline-block px-3 py-1 bg-green-200/50 text-green-800 text-xs font-mono font-bold mb-6 border border-green-500/30 rounded w-max reveal">PORTFOLIO // EMBEDDED_SYS & HARDWARE</div>
         <h1 class="huge-text reveal text-stone-800 drop-shadow-sm">SHAPING<br><span class="text-stone-400">SILICON.</span></h1>
         
         <div class="mt-8 md:mt-12">
             <div class="reveal" style="transition-delay: 0.1s;">
                 <p class="text-lg md:text-xl font-light leading-relaxed text-stone-600 max-w-2xl">
-                    Electronics & Communication Engineer at PDEU. Bridging the gap between analog reality and digital precision through DSP, embedded architecture, CAD modeling, and high-fidelity audio systems.
+                    Electronics & Communication Engineer at PDEU (CGPA: 8.64/10). Bridging physical hardware with embedded firmware through PCB layout in KiCad, microcontroller bring-up (AVR/ATmega, ESP32), 3D functional modeling in Fusion 360, and audio DSP.
                 </p>
                 
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-10 text-xs md:text-sm font-mono text-stone-500">
                     <p class="flex items-center gap-2 text-stone-700">
                         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> 
-                        OPEN TO OPPORTUNITIES
+                        OPEN TO VISITING THESIS / INTERNSHIPS (JAN–MAY 2027)
                     </p>
                     <p class="hidden sm:block text-stone-400">|</p>
-                    <p>LOC: Ahmedabad, IN</p>
+                    <p>LOC: Gandhinagar / Ahmedabad, IN</p>
                     <p class="hidden sm:block text-stone-400">|</p>
-                    <p>DEG: B.Tech ECE '27</p>
+                    <p>DEG: B.Tech ECE (Class of 2027)</p>
+                    <p class="hidden sm:block text-stone-400">|</p>
+                    <a href="Kahaan_Padiya_CV.pdf" target="_blank" class="text-green-700 underline font-bold hover:text-green-900 flex items-center gap-1">Download CV.pdf</a>
                 </div>
             </div>
         </div>
@@ -193,16 +200,50 @@
             <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
                 <div class="flex justify-between items-center h-16 md:h-20">
                     <span class="text-stone-400 font-mono text-sm">04</span>
-                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">TA Robot Logic</h3>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">Beam Steering & Array Tool</h3>
                     <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all font-mono text-xs">+</div>
                 </div>
                 <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
                     <p class="text-stone-700 text-base leading-relaxed">
-                        Collaborated to build a functional teaching assistant robot. Designed the electronics subsystem, integrating an Asus Tinker Board for AI processing alongside an Arduino framework for precision motor control. Designed enclosures and mounts.
+                        Designed a simulation tool to visualize and optimize beamforming for antenna and acoustic arrays. Implemented algorithms for phase shifting and array factor calculation directly applicable to spatial acoustics and RF systems.
+                    </p>
+                    <div class="space-y-4 font-mono">
+                        <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Technical Stack</div>
+                        <p class="text-sm text-green-700">MATLAB | DSP | Spatial Array Modeling (2024)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-stone-400 font-mono text-sm">05</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">Campus Navigation Tool</h3>
+                    <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all font-mono text-xs">+</div>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
+                    <p class="text-stone-700 text-base leading-relaxed">
+                        Mapped all university buildings using QGIS and deployed a responsive web application accessible via QR codes stationed across campus. Implemented an autocomplete search feature to instantly locate specific academic and administrative facilities.
+                    </p>
+                    <div class="space-y-4 font-mono">
+                        <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Environment</div>
+                        <p class="text-sm text-green-700">QGIS | Web GIS | QR Deployment (2023)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal p-6 md:p-8 group" onclick="this.classList.toggle('expanded')">
+                <div class="flex justify-between items-center h-16 md:h-20">
+                    <span class="text-stone-400 font-mono text-sm">06</span>
+                    <h3 class="text-xl md:text-4xl font-bold group-hover:text-green-700 transition-colors flex-1 ml-4 md:ml-12">TA Robot Assistant</h3>
+                    <div class="w-8 h-8 rounded border border-stone-400 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all font-mono text-xs">+</div>
+                </div>
+                <div class="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 opacity-0 group-[.expanded]:opacity-100 transition-opacity duration-700 delay-100">
+                    <p class="text-stone-700 text-base leading-relaxed">
+                        Collaborated to build a functional robot assistant. Designed the electronics subsystem, integrating an Asus Tinker Board for front-end processing alongside an Arduino framework for precision motor control.
                     </p>
                     <div class="space-y-4 font-mono">
                         <div class="text-xs uppercase text-stone-500 font-bold tracking-widest border-b border-stone-300 pb-2">Hardware & Design</div>
-                        <p class="text-sm text-green-700">Asus Tinker Board | Arduino | SolidWorks</p>
+                        <p class="text-sm text-green-700">Asus Tinker Board | Arduino | SolidWorks (2019)</p>
                     </div>
                 </div>
             </div>
@@ -273,8 +314,8 @@
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
-                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('3D Modeling & Enclosures', 'AutoCAD, SolidWorks, SketchUp Hardware Design')">
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_05 [CAD]: 3D Modeling</span>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('PCB Design & 3D CAD', 'KiCad 2-Layer PCB Layout, Fusion 360, SolidWorks, Enclosures')">
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_05 [PCB_CAD]: Hardware Prototyping</span>
                             <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
                             <div class="pin-head rounded-l-sm shrink-0"></div>
                         </div>
@@ -342,6 +383,15 @@
                 
                 <div class="border-l-2 border-stone-300 pl-6 relative group timeline-item hover:border-green-500">
                     <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#f4f1ea] border-2 border-stone-400"></div>
+                    <h4 class="text-lg font-bold text-stone-800 group-hover:text-green-700 transition-colors">Research Intern | Indian Institute of Science (IISc)</h4>
+                    <p class="text-xs font-mono text-stone-500 mb-3 mt-1">MAY 2026 – JULY 2026 // DEPT. OF INSTRUMENTATION & APPLIED PHYSICS</p>
+                    <p class="text-sm text-stone-700 leading-relaxed">
+                        Developed embedded firmware in C++ for an electronic pipette, implementing precision motion control, persistent calibration management, serial communication, and automated homing to enable accurate liquid handling. Engineered custom PCBs in KiCad (linear CCD sensor breakout), modeled 3D-printed enclosures in Fusion 360, and executed end-to-end electro-mechanical integration.
+                    </p>
+                </div>
+
+                <div class="border-l-2 border-stone-300 pl-6 relative group timeline-item hover:border-green-500">
+                    <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#f4f1ea] border-2 border-stone-400"></div>
                     <h4 class="text-lg font-bold text-stone-800 group-hover:text-green-700 transition-colors">Summer Intern | Jivdaya Charitable Trust</h4>
                     <p class="text-xs font-mono text-stone-500 mb-3 mt-1">JUNE 2024 // ANIMAL WELFARE</p>
                     <p class="text-sm text-stone-700 leading-relaxed">
@@ -368,10 +418,20 @@
                 </div>
             </div>
 
-            <div class="space-y-12 reveal" style="transition-delay: 0.2s;">
+            <div class="space-y-12 reveal" id="awards" style="transition-delay: 0.2s;">
                 
                 <div>
-                    <h3 class="text-xl font-bold mb-6 font-mono text-green-700 border-b border-stone-300 pb-2">> AWARDS</h3>
+                    <h3 class="text-xl font-bold mb-6 font-mono text-green-700 border-b border-stone-300 pb-2">> PATENTS & HONORS</h3>
+                    <div class="bg-white/50 border border-green-500/40 rounded p-5 mb-4 hover:border-green-500 transition-colors shadow-sm">
+                        <div class="flex items-start gap-4">
+                            <div class="text-2xl mt-1">📜</div>
+                            <div>
+                                <h4 class="font-bold text-stone-800">Design Patent - High-Gain Fractal Antenna</h4>
+                                <p class="text-xs text-stone-500 font-mono mt-1 mb-2">2025 // ENHANCED WIRELESS COMMUNICATION</p>
+                                <p class="text-sm text-stone-700">Co-inventor on granted design patent for a high-gain fractal antenna geometry designed for wideband efficiency and enhanced wireless RF performance.</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="bg-white/50 border border-stone-300 rounded p-5 mb-4 hover:border-amber-500/50 transition-colors shadow-sm">
                         <div class="flex items-start gap-4">
                             <div class="text-2xl mt-1">🏆</div>
@@ -478,18 +538,18 @@
             "<span class='text-green-700'>$</span> ./init_hardware.sh",
             "Loading bootloader... <span class='text-green-400'>[OK]</span>",
             "Mounting file system... <span class='text-green-400'>[OK]</span>",
-            "Checking CPU architecture: <span class='text-green-400'>ATmega/AVR detected</span>",
+            "Checking CPU architecture: <span class='text-green-400'>ATmega / ESP32 / Cortex-M</span>",
             "Allocating SRAM... 8192 bytes mapped",
             "Initializing System Modules...",
             "  -> Loaded: Mixed-Signal Design Patterns",
-            "  -> Loaded: Audio Engineering (DSP)",
-            "  -> Loaded: 3D CAD (AutoCAD, SolidWorks)",
+            "  -> Loaded: Audio Engineering & Bioacoustics (DSP)",
+            "  -> Loaded: Hardware CAD (KiCad EDA, Fusion 360)",
             "Verifying Simulation Environments:",
-            "  -> MATLAB <span class='text-green-400'>[OK]</span>",
-            "  -> Simulink <span class='text-green-400'>[OK]</span>",
-            "  -> Proteus <span class='text-green-400'>[OK]</span>",
+            "  -> MATLAB / Simulink <span class='text-green-400'>[OK]</span>",
+            "  -> LTspice / Tina-TI <span class='text-green-400'>[OK]</span>",
             "Compiling Embedded C++ toolchain... done.",
-            "<span class='text-amber-500'>Warning: Over-Sampling Ratio (OSR) optimal.</span>",
+            "Loading Granted Patent Data: High-Gain Fractal Antenna... <span class='text-green-400'>[OK]</span>",
+            "<span class='text-amber-500'>Telemetry: Open for Visiting Thesis / Capstone 2027.</span>",
             "System initialization complete.",
             "<span class='text-green-700'>$</span> _"
         ];
