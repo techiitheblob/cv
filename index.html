@@ -96,8 +96,8 @@
     <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 bg-[#f4f1ea]/80 backdrop-blur-md border-b border-stone-300">
         <span class="font-bold tracking-tighter text-xl text-green-700">Kahaan.Padiya</span>
         <div class="space-x-3 md:space-x-8 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-stone-500 flex items-center">
-            <a href="#experience" class="hover:text-green-700 transition">Experience</a>
             <a href="#work" class="hover:text-green-700 transition">Projects</a>
+            <a href="#experience" class="hover:text-green-700 transition">Experience</a>
             <a href="#skills" class="hover:text-green-700 transition">Skills</a>
             <a href="#awards" class="hover:text-green-700 transition hidden sm:inline">Patents & Honors</a>
             <a href="Kahaan_Padiya_CV.pdf" target="_blank" class="hover:bg-green-700 hover:text-white transition bg-green-600/10 px-3 py-1 rounded text-green-700 border border-green-500/30 flex items-center gap-1">
@@ -268,122 +268,6 @@
         </div>
     </section>
 
-    <section id="skills" class="px-6 md:px-12 py-24 md:py-32 bg-[#e8e4d9]/80 border-t border-stone-300 backdrop-blur-md">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-20">
-            
-            <div class="lg:col-span-5 reveal" id="terminal-trigger">
-                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-stone-900">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-                    Technical Skills
-                </h4>
-                <p class="text-stone-500 text-sm mb-8 font-mono text-[11px]">// System initialization & software proficiencies loading...</p>
-                
-                <div class="bg-[#050f08] border border-stone-400 rounded-lg overflow-hidden shadow-lg">
-                    <div class="bg-[#0a1f11] px-4 py-2 flex items-center gap-3 border-b border-stone-600">
-                        <div class="flex gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <span class="text-xs text-green-600/60 font-mono tracking-wider ml-4">user@kahaan-sys: ~</span>
-                        <div class="ml-auto flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span class="text-[10px] text-green-500 font-mono uppercase font-bold tracking-widest">Live Log</span>
-                        </div>
-                    </div>
-                    <div class="p-5 h-[350px] overflow-y-auto font-mono text-xs md:text-sm text-green-400 leading-relaxed relative" id="term-container">
-                        <div id="terminal-output" class="space-y-1"></div>
-                        <span id="terminal-cursor" class="text-green-500 animate-pulse hidden block mt-1">█</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:col-span-7 reveal" style="transition-delay: 0.2s;">
-                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-stone-900">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M22 16h-4"/><path d="M6 16H2"/><path d="M18 20v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg>
-                    Skills Map
-                </h4>
-                <p class="text-stone-500 text-sm mb-6 font-mono text-[11px]">// Interactive Data Sheet: Hover over the pins to inspect my technical domains.</p>
-                
-                <div class="inline-block bg-green-200 text-green-800 border border-green-500/50 px-4 py-2 rounded text-[10px] md:text-xs font-bold tracking-widest animate-pulse mb-8 shadow-sm">
-                    SCANNING... HOVER OVER PINS TO INSPECT DOMAINS
-                </div>
-
-                <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 font-mono text-[9px] md:text-[11px] lg:text-xs mt-2 w-full">
-                    
-                    <div class="flex flex-col gap-6 md:gap-8 items-end z-10 w-full">
-                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Mixed-Signal Design', 'Delta-Sigma Modulators, VLSI Design, Analog Circuits')">
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_01 [ADC]: Mixed-Signal</span>
-                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                            <div class="pin-head rounded-l-sm shrink-0"></div>
-                        </div>
-                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Digital Signal Processing', 'Audio Engineering, Noise Shaping, Active Filtering')">
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_02 [DSP]: Signal Proc.</span>
-                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                            <div class="pin-head rounded-l-sm shrink-0"></div>
-                        </div>
-                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Embedded C/C++ & Assembly', 'AVR/ATmega Architecture, Assembly (8086), Python')">
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_03 [TXD]: C_CPP & ASM</span>
-                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                            <div class="pin-head rounded-l-sm shrink-0"></div>
-                        </div>
-                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('MATLAB & Simulation Environments', 'Simulink, Proteus, LTspice, System Modeling')">
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_04 [SIM]: MATLAB_SYS</span>
-                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                            <div class="pin-head rounded-l-sm shrink-0"></div>
-                        </div>
-                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('PCB Design & 3D CAD', 'KiCad 2-Layer PCB Layout, Fusion 360, SolidWorks, Enclosures')">
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_05 [PCB_CAD]: Hardware Prototyping</span>
-                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
-                            <div class="pin-head rounded-l-sm shrink-0"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="w-20 h-[300px] md:w-28 md:h-[350px] lg:w-32 ic-package rounded-sm flex items-center justify-center shrink-0">
-                        <div class="ic-notch"></div>
-                        <div class="absolute top-4 left-3 md:left-4 w-2 h-2 md:w-3 md:h-3 rounded-full bg-stone-700 shadow-inner border border-stone-800"></div>
-                        <span class="rotate-90 text-stone-400 font-bold tracking-widest text-lg md:text-xl lg:text-2xl opacity-70 drop-shadow-md whitespace-nowrap">KP-2027</span>
-                    </div>
-
-                    <div class="flex flex-col gap-6 md:gap-8 items-start z-10 w-full">
-                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Power Systems & Optimization', 'Solar Algorithms, Panel Thermal Properties, Efficiency')">
-                            <div class="pin-head rounded-r-sm shrink-0"></div>
-                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Power Sys. [VCC]: PIN_10</span>
-                        </div>
-                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Robotics & Motor Control', 'Servo Logic, Arduino Framework, Dual-Axis Tracking')">
-                            <div class="pin-head rounded-r-sm shrink-0"></div>
-                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Motor Control [PWM]: PIN_09</span>
-                        </div>
-                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Audio Synthesis & Generation', 'Transistor Ladder Filters, Virtual Analog Engines')">
-                            <div class="pin-head rounded-r-sm shrink-0"></div>
-                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Audio Synth [I2S]: PIN_08</span>
-                        </div>
-                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Sensor Integration & Comm', 'IMU, Asus Tinker Board, Raspberry Pi, I2C/SPI Bus')">
-                            <div class="pin-head rounded-r-sm shrink-0"></div>
-                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Sensors [I2C_SPI]: PIN_07</span>
-                        </div>
-                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('System Prototyping & Layout', 'Hardware Integration, Component Layout, Debugging')">
-                            <div class="pin-head rounded-r-sm shrink-0"></div>
-                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
-                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Prototyping [GND]: PIN_06</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-10 bg-[#f4f1ea] border border-stone-300 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-md relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
-                    <div id="pin-title" class="text-green-700 font-bold font-mono text-sm md:text-base mb-2 uppercase tracking-widest">>> WAITING FOR INTERRUPT <<</div>
-                    <div id="pin-desc" class="text-stone-600 text-xs md:text-sm font-medium">Select a pin above to read the module specification.</div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
     <section id="experience" class="px-6 md:px-12 py-24 md:py-32 border-t border-stone-300">
         <div class="flex items-center gap-4 mb-16 md:mb-20 reveal">
             <div class="h-[1px] bg-stone-300 flex-1"></div>
@@ -496,6 +380,122 @@
                             </div>
                         </li>
                     </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="px-6 md:px-12 py-24 md:py-32 bg-[#e8e4d9]/80 border-t border-stone-300 backdrop-blur-md">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-20">
+            
+            <div class="lg:col-span-5 reveal" id="terminal-trigger">
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-stone-900">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                    Technical Skills
+                </h4>
+                <p class="text-stone-500 text-sm mb-8 font-mono text-[11px]">// System initialization & software proficiencies loading...</p>
+                
+                <div class="bg-[#050f08] border border-stone-400 rounded-lg overflow-hidden shadow-lg">
+                    <div class="bg-[#0a1f11] px-4 py-2 flex items-center gap-3 border-b border-stone-600">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-green-600/60 font-mono tracking-wider ml-4">user@kahaan-sys: ~</span>
+                        <div class="ml-auto flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span class="text-[10px] text-green-500 font-mono uppercase font-bold tracking-widest">Live Log</span>
+                        </div>
+                    </div>
+                    <div class="p-5 h-[350px] overflow-y-auto font-mono text-xs md:text-sm text-green-400 leading-relaxed relative" id="term-container">
+                        <div id="terminal-output" class="space-y-1"></div>
+                        <span id="terminal-cursor" class="text-green-500 animate-pulse hidden block mt-1">█</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 reveal" style="transition-delay: 0.2s;">
+                <h4 class="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-stone-900">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700"><path d="M18 8V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M22 12h-4"/><path d="M6 12H2"/><path d="M22 16h-4"/><path d="M6 16H2"/><path d="M18 20v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg>
+                    Skills Map
+                </h4>
+                <p class="text-stone-500 text-sm mb-6 font-mono text-[11px]">// Interactive Data Sheet: Hover over the pins to inspect my technical domains.</p>
+                
+                <div class="inline-block bg-green-200 text-green-800 border border-green-500/50 px-4 py-2 rounded text-[10px] md:text-xs font-bold tracking-widest animate-pulse mb-8 shadow-sm">
+                    SCANNING... HOVER OVER PINS TO INSPECT DOMAINS
+                </div>
+
+                <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 font-mono text-[9px] md:text-[11px] lg:text-xs mt-2 w-full">
+                    
+                    <div class="flex flex-col gap-6 md:gap-8 items-end z-10 w-full">
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Mixed-Signal Design', 'Delta-Sigma Modulators, VLSI Design, Analog Circuits')">
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_01 [ADC]: Mixed-Signal</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Digital Signal Processing', 'Audio Engineering, Noise Shaping, Active Filtering')">
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_02 [DSP]: Signal Proc.</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('Embedded C/C++ & Assembly', 'AVR/ATmega Architecture, Assembly (8086), Python')">
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_03 [TXD]: C_CPP & ASM</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('MATLAB & Simulation Environments', 'Simulink, Proteus, LTspice, System Modeling')">
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_04 [SIM]: MATLAB_SYS</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                        <div class="flex items-center justify-end group cursor-pointer pin-group w-full" onmouseover="updatePinout('PCB Design & 3D CAD', 'KiCad 2-Layer PCB Layout, Fusion 360, SolidWorks, Enclosures')">
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors mr-2 text-right">PIN_05 [PCB_CAD]: Hardware Prototyping</span>
+                            <div class="pin-line-left w-4 md:w-8 shrink-0"></div>
+                            <div class="pin-head rounded-l-sm shrink-0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-20 h-[300px] md:w-28 md:h-[350px] lg:w-32 ic-package rounded-sm flex items-center justify-center shrink-0">
+                        <div class="ic-notch"></div>
+                        <div class="absolute top-4 left-3 md:left-4 w-2 h-2 md:w-3 md:h-3 rounded-full bg-stone-700 shadow-inner border border-stone-800"></div>
+                        <span class="rotate-90 text-stone-400 font-bold tracking-widest text-lg md:text-xl lg:text-2xl opacity-70 drop-shadow-md whitespace-nowrap">KP-2027</span>
+                    </div>
+
+                    <div class="flex flex-col gap-6 md:gap-8 items-start z-10 w-full">
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Power Systems & Optimization', 'Solar Algorithms, Panel Thermal Properties, Efficiency')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Power Sys. [VCC]: PIN_10</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Robotics & Motor Control', 'Servo Logic, Arduino Framework, Dual-Axis Tracking')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Motor Control [PWM]: PIN_09</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Audio Synthesis & Generation', 'Transistor Ladder Filters, Virtual Analog Engines')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Audio Synth [I2S]: PIN_08</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('Sensor Integration & Comm', 'IMU, Asus Tinker Board, Raspberry Pi, I2C/SPI Bus')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Sensors [I2C_SPI]: PIN_07</span>
+                        </div>
+                        <div class="flex items-center group cursor-pointer pin-group w-full" onmouseover="updatePinout('System Prototyping & Layout', 'Hardware Integration, Component Layout, Debugging')">
+                            <div class="pin-head rounded-r-sm shrink-0"></div>
+                            <div class="pin-line-right w-4 md:w-8 shrink-0"></div>
+                            <span class="text-stone-600 font-bold group-hover:text-green-700 transition-colors ml-2 text-left">Prototyping [GND]: PIN_06</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 bg-[#f4f1ea] border border-stone-300 rounded p-4 min-h-[100px] flex flex-col justify-center items-center text-center shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
+                    <div id="pin-title" class="text-green-700 font-bold font-mono text-sm md:text-base mb-2 uppercase tracking-widest">>> WAITING FOR INTERRUPT <<</div>
+                    <div id="pin-desc" class="text-stone-600 text-xs md:text-sm font-medium">Select a pin above to read the module specification.</div>
                 </div>
 
             </div>
